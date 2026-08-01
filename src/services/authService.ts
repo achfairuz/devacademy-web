@@ -1,4 +1,4 @@
-import type { LoginPayload, User } from '@/models/auth'
+import type { User } from '@/models/auth'
 
 const TOKEN_KEY = 'devacademy.access_token'
 const USER_KEY = 'devacademy.user'

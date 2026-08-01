@@ -5,26 +5,10 @@ import AppHeader from '@/components/common/AppHeader.vue'
 </script>
 
 <template>
-  <div class="app-layout">
+  <div class="flex min-h-screen flex-col">
     <AppHeader />
-    <main class="app-layout__main">
+    <main class="mx-auto w-full max-w-[1024px] flex-1 px-6 py-8">
       <RouterView />
     </main>
   </div>
 </template>
-
-<style scoped>
-.app-layout {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-.app-layout__main {
-  flex: 1;
-  width: 100%;
-  max-width: 1024px;
-  margin: 0 auto;
-  padding: 2rem 1.5rem;
-}
-</style>

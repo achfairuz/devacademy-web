@@ -1,27 +1,87 @@
 # devacademy-web
 
-This template should help get you started developing with Vue 3 in Vite.
+Frontend web untuk **DevAcademy** — dibangun dengan Vue 3, Vite, Pinia, Vue Router, dan Tailwind CSS.
 
-## Recommended IDE Setup
+## Tech Stack
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+| Teknologi | Versi | Fungsi |
+| --- | --- | --- |
+| [Vue 3](https://vuejs.org/) | `rc` | Framework UI (Composition API + `<script setup>`) |
+| [Vite](https://vite.dev/) | 8.x | Build tool & dev server |
+| [Pinia](https://pinia.vuejs.org/) | 4.x | State management |
+| [Vue Router](https://router.vuejs.org/) | 5.x | Routing & route guards |
+| [Tailwind CSS](https://tailwindcss.com/) | 4.x | Utility-first CSS |
+| [Lucide](https://lucide.dev/) (`@lucide/vue`) | 1.x | Icon library |
+| [TypeScript](https://www.typescriptlang.org/) | 6.x | Type safety |
+| [Vitest](https://vitest.dev/) | 4.x | Unit testing |
+| [ESLint](https://eslint.org/) + [oxlint](https://oxc.rs/) | — | Linting |
 
-## Recommended Browser Setup
+## Struktur Proyek
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+```
+src/
+├── api/               # HTTP client & request per modul
+│   ├── http.ts
+│   └── modules/
+├── assets/
+│   └── main.css       # Tailwind CSS + tema (color tokens)
+├── components/
+│   ├── base/          # Komponen generik/atomik (BaseButton, dll.)
+│   └── common/        # Komponen lintas halaman (AppHeader, dll.)
+├── controllers/       # Koordinasi store + routing (useAuthController)
+├── hooks/             # Composables reusable
+│   ├── useAuth.ts
+│   ├── useAsync.ts    # State loading/error untuk aksi async
+│   └── useForm.ts     # State form + reset
+├── layouts/
+│   ├── DefaultLayout.vue  # Header + konten utama
+│   └── AuthLayout.vue     # Konten di tengah layar (tanpa header)
+├── models/            # Type definitions (api, auth)
+├── router/
+│   ├── index.ts
+│   ├── routes.ts      # Definisi route
+│   └── guards.ts      # Route guards (requiresAuth / guestOnly)
+├── services/          # Abstraksi di atas api (authService)
+├── stores/            # Pinia stores (auth)
+├── utils/             # Helper murni (formatters)
+├── views/             # Halaman, dikelompokkan per fitur
+│   ├── home/
+│   ├── auth/
+│   ├── profile/
+│   └── error/
+└── __tests__/         # Unit tests
+```
 
-## Type Support for `.vue` Imports in TS
+### Views per Fitur
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+Halaman dikelompokkan berdasarkan fiturnya, bukan per jenis:
 
-## Customize configuration
+```
+views/
+├── home/HomeView.vue        # Beranda
+├── auth/LoginView.vue       # Login
+├── profile/ProfileView.vue  # Profile (membutuhkan autentikasi)
+└── error/NotFoundView.vue   # Halaman 404
+```
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+### Layout
+
+- `DefaultLayout` — dipakai halaman yang menampilkan `AppHeader` (home, profile).
+- `AuthLayout` — dipakai halaman auth (login), konten di tengah layar tanpa header.
+
+### Hooks
+
+- `useAuth` — membungkus `useAuthStore` jadi API reaktif (`user`, `isAuthenticated`, `login`, `logout`).
+- `useAsync` — mengelola `loading` dan `error` untuk aksi async.
+- `useForm` — state form reaktif dengan method `reset()`.
+
+Contoh penggunaan `useAsync` + `useForm` di `LoginView`:
+
+```ts
+const { login } = useAuthController()
+const { form } = useForm({ email: '', password: '' })
+const { loading, error, run } = useAsync(login)
+```
 
 ## Project Setup
 
@@ -29,26 +89,35 @@ See [Vite Configuration Reference](https://vite.dev/config/).
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+### Environment Variables
+
+Salin `.env.example` menjadi `.env` lalu sesuaikan:
 
 ```sh
-npm run dev
+cp .env.example .env
 ```
 
-### Type-Check, Compile and Minify for Production
+| Variabel | Deskripsi |
+| --- | --- |
+| `VITE_API_BASE_URL` | Base URL API yang dipakai `src/api/http.ts` |
+
+## Scripts
 
 ```sh
-npm run build
+npm run dev            # Dev server dengan hot-reload
+npm run build          # Type-check + build produksi
+npm run preview        # Preview hasil build
+npm run type-check     # Cek tipe dengan vue-tsc
+npm run test:unit      # Jalankan unit test (Vitest)
+npm run lint           # Lint: oxlint + eslint (dengan --fix)
+npm run format         # Format kode dengan Prettier
 ```
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+## Routing
 
-```sh
-npm run test:unit
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+| Path | Nama | Layout | Auth |
+| --- | --- | --- | --- |
+| `/` | `home` | DefaultLayout | — |
+| `/profile` | `profile` | DefaultLayout | wajib login |
+| `/login` | `login` | AuthLayout | hanya tamu |
+| `*` | `not-found` | — | — |

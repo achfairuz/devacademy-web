@@ -1,5 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router'
 
+import AuthLayout from '@/layouts/AuthLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 
 export const routes: RouteRecordRaw[] = [
@@ -10,25 +11,31 @@ export const routes: RouteRecordRaw[] = [
       {
         path: '',
         name: 'home',
-        component: () => import('@/views/HomeView.vue'),
+        component: () => import('@/views/home/HomeView.vue'),
       },
       {
         path: 'profile',
         name: 'profile',
-        component: () => import('@/views/ProfileView.vue'),
+        component: () => import('@/views/profile/ProfileView.vue'),
         meta: { requiresAuth: true },
       },
     ],
   },
   {
-    path: '/login',
-    name: 'login',
-    component: () => import('@/views/LoginView.vue'),
-    meta: { guestOnly: true },
+    path: '/',
+    component: AuthLayout,
+    children: [
+      {
+        path: 'login',
+        name: 'login',
+        component: () => import('@/views/auth/LoginView.vue'),
+        meta: { guestOnly: true },
+      },
+    ],
   },
   {
     path: '/:pathMatch(.*)*',
     name: 'not-found',
-    component: () => import('@/views/NotFoundView.vue'),
+    component: () => import('@/views/error/NotFoundView.vue'),
   },
 ]

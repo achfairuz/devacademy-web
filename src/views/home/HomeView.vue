@@ -8,28 +8,16 @@ const { user, isAuthenticated } = useAuthController()
 </script>
 
 <template>
-  <div class="home">
+  <div>
     <h1>Selamat datang di DevAcademy</h1>
-    <p v-if="isAuthenticated" class="home__user">
+    <p v-if="isAuthenticated">
       Halo, {{ user?.name }}
-      <span class="home__avatar">{{ formatInitials(user?.name ?? '') }}</span>
+      <span
+        class="ml-2 inline-flex h-7 w-7 items-center justify-center rounded-full bg-primary text-xs font-bold text-white"
+      >
+        {{ formatInitials(user?.name ?? '') }}
+      </span>
     </p>
     <RouterLink v-else to="/login">Login untuk mengakses profile</RouterLink>
   </div>
 </template>
-
-<style scoped>
-.home__avatar {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.75rem;
-  height: 1.75rem;
-  margin-left: 0.5rem;
-  border-radius: 9999px;
-  background: var(--color-primary);
-  color: #fff;
-  font-size: 0.75rem;
-  font-weight: 700;
-}
-</style>

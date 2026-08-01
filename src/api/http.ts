@@ -37,7 +37,7 @@ export async function request<T>(path: string, options: ApiClientOptions = {}): 
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      ...(headers ?? {}),
+      ...headers,
     },
     body: body === undefined ? undefined : JSON.stringify(body),
     signal,

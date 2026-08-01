@@ -1,12 +1,18 @@
 <script setup lang="ts">
+import { AtSign, LockKeyhole, PersonStandingIcon } from '@lucide/vue'
 import { RouterLink } from 'vue-router'
+import { ref } from 'vue'
 
 import BaseButton from '@/components/base/BaseButton.vue'
+import BaseCard from '@/components/base/BaseCard.vue'
+import BaseInput from '@/components/base/BaseInput.vue'
+import AuthTabs from '@/components/common/AuthTabs.vue'
 import { useAuthController } from '@/controllers/authController'
 import { useAsync } from '@/hooks/useAsync'
 import { useForm } from '@/hooks/useForm'
 
 const { login } = useAuthController()
+const activeTab = ref<'login' | 'register'>('login')
 const { form } = useForm({
   email: '',
   password: '',
@@ -23,49 +29,43 @@ async function onSubmit() {
 </script>
 
 <template>
-  <div class="login">
-    <h1>Login</h1>
-    <form class="login__form" @submit.prevent="onSubmit">
-      <label>
-        Email
-        <input v-model="form.email" type="email" required autocomplete="email" />
-      </label>
-      <label>
-        Password
-        <input v-model="form.password" type="password" required autocomplete="current-password" />
-      </label>
-      <p v-if="error" class="login__error">{{ error }}</p>
-      <BaseButton type="submit" :disabled="loading">
-        {{ loading ? 'Memproses...' : 'Masuk' }}
-      </BaseButton>
+  <BaseCard class="flex w-full max-w-md flex-col gap-6">
+    <AuthTabs v-model="activeTab" />
+
+    <form v-if="activeTab === 'login'" class="flex flex-col gap-4" @submit.prevent="onSubmit">
+      <BaseInput
+        id="email"
+        v-model="form.email"
+        label="Email"
+        type="email"
+        required
+        autocomplete="email"
+      >
+        <template #icon>
+          <AtSign class="h-4 w-4" />
+        </template>
+      </BaseInput>
+      <BaseInput
+        id="password"
+        v-model="form.password"
+        label="Password"
+        type="password"
+        required
+        autocomplete="current-password"
+      >
+        <template #icon>
+          <LockKeyhole class="h-4 w-4" />
+        </template>
+      </BaseInput>
+      <p v-if="error" class="text-sm text-red-600">{{ error }}</p>
+      <BaseButton type="submit" :loading="loading">Masuk</BaseButton>
     </form>
-    <RouterLink to="/">Kembali ke beranda</RouterLink>
-  </div>
+
+    <div v-else class="flex flex-col items-center gap-2 py-6 text-center">
+      <PersonStandingIcon class="h-10 w-10 text-text-soft" />
+      <p class="text-text-soft">Pendaftaran segera hadir.</p>
+    </div>
+
+    <RouterLink to="/" class="text-sm text-primary">Kembali ke beranda</RouterLink>
+  </BaseCard>
 </template>
-
-<style scoped>
-.login__form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  max-width: 24rem;
-}
-
-.login__form label {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  font-size: 0.875rem;
-}
-
-.login__form input {
-  padding: 0.5rem 0.75rem;
-  border: 1px solid var(--color-border);
-  border-radius: 0.375rem;
-}
-
-.login__error {
-  color: #dc2626;
-  font-size: 0.875rem;
-}
-</style>
