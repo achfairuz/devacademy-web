@@ -1,3 +1,5 @@
+import axios, { type AxiosRequestConfig } from 'axios'
+
 import type { ApiErrorPayload } from '@/models/api'
 
 export class ApiError extends Error {
@@ -22,37 +24,39 @@ interface ApiClientOptions {
 
 const BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? '/api').replace(/\/+$/, '')
 
+const client = axios.create({
+  baseURL: BASE_URL,
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+  },
+})
+
 export async function request<T>(path: string, options: ApiClientOptions = {}): Promise<T> {
   const { method = 'GET', params, body, headers, signal } = options
 
-  const url = new URL(`${BASE_URL}${path.startsWith('/') ? path : `/${path}`}`, window.location.origin)
-  for (const [key, value] of Object.entries(params ?? {})) {
-    if (value !== undefined && value !== null) {
-      url.searchParams.set(key, String(value))
-    }
-  }
-
-  const response = await fetch(url, {
+  const config: AxiosRequestConfig = {
     method,
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      ...headers,
-    },
-    body: body === undefined ? undefined : JSON.stringify(body),
+    url: path,
+    params,
+    data: body,
+    headers: headers as Record<string, string>,
     signal,
-  })
-
-  if (response.status === 204) {
-    return undefined as T
   }
 
-  const data = (await response.json().catch(() => null)) as ApiErrorPayload | T
-
-  if (!response.ok) {
-    const payload = data as ApiErrorPayload | null
-    throw new ApiError(response.status, payload?.message ?? response.statusText, payload)
+  try {
+    const response = await client.request<T>(config)
+    if (response.status === 204) {
+      return undefined as T
+    }
+    return response.data
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const response = error.response
+      const status = response?.status ?? 0
+      const payload = (response?.data ?? null) as ApiErrorPayload | null
+      throw new ApiError(status, payload?.message ?? error.message, payload)
+    }
+    throw error
   }
-
-  return data as T
 }

@@ -21,7 +21,7 @@ withDefaults(
   <button
     :type="type"
     class="inline-flex cursor-pointer items-center justify-center gap-2 rounded-md px-5 py-2.5 text-sm font-semibold transition-opacity duration-150 disabled:cursor-not-allowed disabled:opacity-50"
-    :class="variant === 'secondary' ? 'bg-gray-200 text-heading' : 'bg-primary text-white'"
+    :class="variant === 'secondary' ? 'bg-secondary-600 text-white' : 'bg-primary text-white'"
     :disabled="disabled || loading"
   >
     <BaseSpinner v-if="loading" size="sm" />

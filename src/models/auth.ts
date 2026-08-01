@@ -1,3 +1,5 @@
+import type { ApiResponse } from './api'
+
 export type UserRole = 'admin' | 'mentor' | 'student'
 
 export interface User {
@@ -12,6 +14,14 @@ export interface LoginPayload {
   email: string
   password: string
 }
+
+export interface RegisterPayload {
+  name: string
+  email: string
+  password: string
+}
+
+export type RegisterResponse = ApiResponse<null>
 
 export interface LoginResponse {
   accessToken: string

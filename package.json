@@ -16,8 +16,11 @@
     "format": "prettier --write --experimental-cli src/"
   },
   "dependencies": {
+    "@iconify-json/logos": "^1.2.11",
+    "@iconify/vue": "^5.0.1",
     "@lucide/vue": "^1.28.0",
     "@tailwindcss/vite": "^4.3.3",
+    "axios": "^1.19.0",
     "pinia": "^4.0.2",
     "tailwindcss": "^4.3.3",
     "vue": "rc",

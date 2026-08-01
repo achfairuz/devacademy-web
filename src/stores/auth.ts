@@ -2,8 +2,12 @@ import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 
 import { authService } from '@/services/authService'
-import { login as loginRequest, fetchCurrentUser } from '@/api/modules/auth'
-import type { LoginPayload, User } from '@/models/auth'
+import {
+  login as loginRequest,
+  register as registerRequest,
+  fetchCurrentUser,
+} from '@/api/modules/auth'
+import type { LoginPayload, RegisterPayload, User } from '@/models/auth'
 
 export const useAuthStore = defineStore('auth', () => {
   const user = ref<User | null>(authService.getSessionUser())
@@ -22,6 +26,16 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  async function register(payload: RegisterPayload): Promise<string> {
+    loading.value = true
+    try {
+      const response = await registerRequest(payload)
+      return response.message
+    } finally {
+      loading.value = false
+    }
+  }
+
   async function fetchUser() {
     const currentUser = await fetchCurrentUser()
     user.value = currentUser
@@ -32,5 +46,5 @@ export const useAuthStore = defineStore('auth', () => {
     user.value = null
   }
 
-  return { user, loading, isAuthenticated, login, fetchUser, logout }
+  return { user, loading, isAuthenticated, login, fetchUser, logout, register }
 })

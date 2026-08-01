@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { AtSign, LockKeyhole } from '@lucide/vue'
+import { AtSign, LockKeyhole, UserRound } from '@lucide/vue'
+
 import BaseButton from '@/components/base/BaseButton.vue'
 import BaseCard from '@/components/base/BaseCard.vue'
 import BaseDivider from '@/components/base/BaseDivider.vue'
@@ -9,21 +10,25 @@ import AuthTabs from '@/components/common/AuthTabs.vue'
 import { useAuthController } from '@/controllers/authController'
 import { useAsync } from '@/hooks/useAsync'
 import { useForm } from '@/hooks/useForm'
-import { useRoute } from 'vue-router'
 
-const { login } = useAuthController()
-const route = useRoute()
+const { register } = useAuthController()
 const { form } = useForm({
+  name: '',
   email: '',
   password: '',
+  confirmPassword: '',
 })
-const { loading, error, run } = useAsync(login)
+const { loading, error, run } = useAsync(register)
 
 async function onSubmit() {
+  if (form.password !== form.confirmPassword) {
+    error.value = 'Konfirmasi password tidak cocok.'
+    return
+  }
   try {
-    await run({ email: form.email, password: form.password })
-  } catch {
-    error.value = 'Email atau password salah.'
+    await run({ name: form.name, email: form.email, password: form.password })
+  } catch (err) {
+    error.value = err instanceof Error ? err.message : 'Pendaftaran gagal. Silakan coba lagi.'
   }
 }
 </script>
@@ -33,6 +38,18 @@ async function onSubmit() {
     <AuthTabs />
 
     <form class="flex flex-col gap-4" @submit.prevent="onSubmit">
+      <BaseInput
+        id="name"
+        v-model="form.name"
+        label="Nama"
+        type="text"
+        required
+        autocomplete="name"
+      >
+        <template #icon>
+          <UserRound class="h-4 w-4" />
+        </template>
+      </BaseInput>
       <BaseInput
         id="email"
         v-model="form.email"
@@ -51,15 +68,26 @@ async function onSubmit() {
         label="Password"
         type="password"
         required
-        autocomplete="current-password"
+        autocomplete="new-password"
       >
         <template #icon>
           <LockKeyhole class="h-4 w-4" />
         </template>
       </BaseInput>
-      <p v-if="route.query.message" class="text-sm text-secondary-700">{{ route.query.message }}</p>
+      <BaseInput
+        id="confirm-password"
+        v-model="form.confirmPassword"
+        label="Konfirmasi Password"
+        type="password"
+        required
+        autocomplete="new-password"
+      >
+        <template #icon>
+          <LockKeyhole class="h-4 w-4" />
+        </template>
+      </BaseInput>
       <p v-if="error" class="text-sm text-red-600">{{ error }}</p>
-      <BaseButton type="submit" :loading="loading">Masuk</BaseButton>
+      <BaseButton type="submit" :loading="loading">Daftar</BaseButton>
     </form>
 
     <BaseDivider>Or</BaseDivider>
