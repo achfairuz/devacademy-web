@@ -30,7 +30,7 @@ const navItems: NavItem[] = [
 const visibleItems = computed(() =>
   navItems.filter((item) => {
     if (item.roles) {
-      return isAuthenticated.value && user.value !== null && item.roles.includes(user.value.role)
+      return isAuthenticated.value && user.value != null && item.roles.includes(user.value.role)
     }
     if (item.requiresAuth) return isAuthenticated.value
     return true

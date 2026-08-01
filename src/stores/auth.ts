@@ -19,8 +19,8 @@ export const useAuthStore = defineStore('auth', () => {
     loading.value = true
     try {
       const response = await loginRequest(payload)
-      authService.setSession(response.accessToken, response.user)
-      user.value = response.user
+      authService.setSession(response.data.token, response.data.user)
+      user.value = response.data.user
     } finally {
       loading.value = false
     }

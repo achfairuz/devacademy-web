@@ -1,5 +1,5 @@
-export function formatInitials(name: string): string {
-  return name
+export function formatInitials(name?: string | null): string {
+  return (name ?? '')
     .split(' ')
     .filter(Boolean)
     .slice(0, 2)

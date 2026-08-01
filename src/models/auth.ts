@@ -24,7 +24,10 @@ export interface RegisterPayload {
 export type RegisterResponse = ApiResponse<null>
 
 export interface LoginResponse {
-  accessToken: string
-  refreshToken: string
-  user: User
+  data: {
+    token: string
+    user: User
+  }
+  message: string
+  status: number
 }
