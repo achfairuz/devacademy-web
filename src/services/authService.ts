@@ -5,7 +5,9 @@ const USER_KEY = 'devacademy.user'
 
 export const authService = {
   get token(): string | null {
-    return localStorage.getItem(TOKEN_KEY)
+    const token = localStorage.getItem(TOKEN_KEY)
+    if (!token || token === 'undefined' || token === 'null') return null
+    return token
   },
 
   setSession(accessToken: string, user: User) {

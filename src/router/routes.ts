@@ -10,14 +10,8 @@ export const routes: RouteRecordRaw[] = [
     children: [
       {
         path: '',
-        name: 'home',
-        component: () => import('@/views/home/HomeView.vue'),
-      },
-      {
-        path: 'profile',
-        name: 'profile',
-        component: () => import('@/views/profile/ProfileView.vue'),
-        meta: { requiresAuth: true },
+        name: 'landing-page',
+        component: () => import('@/views/home/LandingPageView.vue'),
       },
     ],
   },
@@ -36,6 +30,19 @@ export const routes: RouteRecordRaw[] = [
         name: 'register',
         component: () => import('@/views/auth/RegisterView.vue'),
         meta: { guestOnly: true },
+      },
+    ],
+  },
+  {
+    path: '/user',
+    component: DefaultLayout,
+    meta: { requiresAuth: true, roles: ['student'] },
+    name: 'user',
+    children: [
+      {
+        path: 'dashboard',
+        name: 'dashboard',
+        component: () => import('@/views/user/home/HomeView.vue'),
       },
     ],
   },

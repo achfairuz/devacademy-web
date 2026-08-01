@@ -11,16 +11,21 @@ import type { LoginPayload, RegisterPayload, User } from '@/models/auth'
 
 export const useAuthStore = defineStore('auth', () => {
   const user = ref<User | null>(authService.getSessionUser())
+
+  if (user.value === null && authService.token !== null) {
+    authService.clearSession()
+  }
+
   const loading = ref(false)
 
-  const isAuthenticated = computed(() => user.value !== null && authService.token !== null)
+  const isAuthenticated = computed(() => user.value != null && authService.token != null)
 
   async function login(payload: LoginPayload) {
     loading.value = true
     try {
-      const response = await loginRequest(payload)
-      authService.setSession(response.data.token, response.data.user)
-      user.value = response.data.user
+      const data = await loginRequest(payload)
+      authService.setSession(data.token, data.user)
+      user.value = data.user
     } finally {
       loading.value = false
     }
@@ -29,8 +34,8 @@ export const useAuthStore = defineStore('auth', () => {
   async function register(payload: RegisterPayload): Promise<string> {
     loading.value = true
     try {
-      const response = await registerRequest(payload)
-      return response.message
+      const result = await registerRequest(payload)
+      return result.message
     } finally {
       loading.value = false
     }

@@ -7,7 +7,12 @@ export function useAuthController() {
 
   async function login(payload: LoginPayload) {
     await auth.login(payload)
-    await router.push({ name: 'home' })
+    const redirect = router.currentRoute.value.query.redirect
+    if (typeof redirect === 'string' && redirect) {
+      await router.push(redirect)
+      return
+    }
+    await router.push({ name: 'dashboard' })
   }
 
   async function register(payload: RegisterPayload) {

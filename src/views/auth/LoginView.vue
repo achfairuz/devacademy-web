@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { AtSign, LockKeyhole } from '@lucide/vue'
+import { ApiError } from '@/api/http'
 import BaseButton from '@/components/base/BaseButton.vue'
 import BaseCard from '@/components/base/BaseCard.vue'
 import BaseDivider from '@/components/base/BaseDivider.vue'
@@ -22,9 +23,19 @@ const { loading, error, run } = useAsync(login)
 async function onSubmit() {
   try {
     await run({ email: form.email, password: form.password })
-  } catch {
-    error.value = 'Email atau password salah.'
+  } catch (err) {
+    if (err instanceof ApiError && err.status === 401) {
+      error.value = 'Email atau password salah.'
+    } else {
+      error.value = err instanceof Error ? err.message : 'Terjadi kesalahan.'
+    }
   }
+}
+
+async function fillTestCredentials() {
+  form.email = 'test@gmail.com'
+  form.password = '12345678'
+  await onSubmit()
 }
 </script>
 
@@ -59,7 +70,18 @@ async function onSubmit() {
       </BaseInput>
       <p v-if="route.query.message" class="text-sm text-secondary-700">{{ route.query.message }}</p>
       <p v-if="error" class="text-sm text-red-600">{{ error }}</p>
-      <BaseButton type="submit" :loading="loading">Masuk</BaseButton>
+      <div class="flex flex-col gap-2">
+        <BaseButton type="submit" :loading="loading">Masuk</BaseButton>
+        <BaseButton
+          type="button"
+          variant="secondary"
+          class="w-full"
+          :loading="loading"
+          @click="fillTestCredentials"
+        >
+          Login Test (test@gmail.com)
+        </BaseButton>
+      </div>
     </form>
 
     <BaseDivider>Or</BaseDivider>
