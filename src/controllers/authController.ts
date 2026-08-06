@@ -32,6 +32,7 @@ export function useAuthController() {
     login,
     register,
     logout,
+    updateProfile: auth.updateProfile,
     fetchUser: auth.fetchUser,
   }
 }

@@ -13,18 +13,7 @@ export const routes: RouteRecordRaw[] = [
         name: 'landing-page',
         component: () => import('@/views/home/LandingPageView.vue'),
       },
-      {
-        path: 'user/profile',
-        name: 'profile',
-        component: () => import('@/views/profile/ProfileView.vue'),
-        meta: { requiresAuth: true },
-      },
-      {
-        path: 'user/subscription',
-        name: 'subscription',
-        component: () => import('@/views/user/subscription/SubscriptionView.vue'),
-        meta: { requiresAuth: true },
-      },
+
       {
         path: 'user/coming-soon',
         name: 'coming-soon',
@@ -62,6 +51,16 @@ export const routes: RouteRecordRaw[] = [
     meta: { requiresAuth: true, roles: ['student'] },
     name: 'user',
     children: [
+      {
+        path: 'profile',
+        name: 'profile',
+        component: () => import('@/views/profile/ProfileView.vue'),
+      },
+      {
+        path: 'subscription',
+        name: 'subscription',
+        component: () => import('@/views/user/subscription/SubscriptionView.vue'),
+      },
       {
         path: 'dashboard',
         name: 'dashboard',

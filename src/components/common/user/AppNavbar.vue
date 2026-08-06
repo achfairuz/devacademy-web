@@ -63,9 +63,27 @@ const navItems: NavItem[] = [
   { label: 'Beranda', to: prefix.value + '/dashboard', icon: House },
   { label: 'Courses', to: prefix.value + '/courses', icon: LayoutDashboard, requiresAuth: true },
   { label: 'Learning', to: prefix.value + '/learning', icon: BookOpen, roles: ['student'] },
-  { label: 'Mentors', to: prefix.value + '/mentors', icon: Users, roles: ['student'], query: { feature: 'Mentors' } },
-  { label: 'Mengajar', to: prefix.value + '/mentor', icon: Users, roles: ['mentor'], query: { feature: 'Mengajar' } },
-  { label: 'Admin', to: prefix.value + '/admin', icon: ShieldCheck, roles: ['admin'], query: { feature: 'Admin' } },
+  {
+    label: 'Mentors',
+    to: prefix.value + '/mentors',
+    icon: Users,
+    roles: ['student'],
+    query: { feature: 'Mentors' },
+  },
+  {
+    label: 'Mengajar',
+    to: prefix.value + '/mentor',
+    icon: Users,
+    roles: ['mentor'],
+    query: { feature: 'Mengajar' },
+  },
+  {
+    label: 'Admin',
+    to: prefix.value + '/admin',
+    icon: ShieldCheck,
+    roles: ['admin'],
+    query: { feature: 'Admin' },
+  },
 ]
 
 const visibleItems = computed(() =>

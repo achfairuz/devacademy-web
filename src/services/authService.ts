@@ -17,6 +17,10 @@ export const authService = {
     }
   },
 
+  updateSessionUser(user: User) {
+    localStorage.setItem(USER_KEY, JSON.stringify(user))
+  },
+
   getSessionUser(): User | null {
     const raw = localStorage.getItem(USER_KEY)
     if (!raw) return null

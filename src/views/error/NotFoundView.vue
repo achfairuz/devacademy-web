@@ -68,7 +68,6 @@ import { RouterLink } from 'vue-router'
           Dashboard
         </RouterLink>
       </div>
-      </div>
     </div>
   </div>
 </template>
