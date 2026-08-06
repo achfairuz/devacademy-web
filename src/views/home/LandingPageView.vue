@@ -1,161 +1,154 @@
 <script setup lang="ts">
-import {
-  Award,
-  BookOpen,
-  Clock,
-  FileBadge,
-  GraduationCap,
-  LayoutDashboard,
-  Play,
-  ShieldCheck,
-  Star,
-  TrendingUp,
-  Users,
-} from '@lucide/vue'
-import { RouterLink } from 'vue-router'
-import { computed, type Component } from 'vue'
-
-import BaseCard from '@/components/base/BaseCard.vue'
-import { useAuthController } from '@/controllers/authController'
-import { formatInitials } from '@/utils/formatters'
-
-const { user, isAuthenticated } = useAuthController()
-
-const stats: { label: string; value: string; icon: Component; accent: string }[] = [
-  { label: 'Kelas Diikuti', value: '3', icon: BookOpen, accent: 'bg-blue-50 text-blue-600' },
-  { label: 'Sertifikat', value: '1', icon: Award, accent: 'bg-emerald-50 text-emerald-600' },
-  { label: 'Poin Belajar', value: '240', icon: Star, accent: 'bg-amber-50 text-amber-600' },
-  { label: 'Jam Belajar', value: '12.5', icon: Clock, accent: 'bg-violet-50 text-violet-600' },
-]
-
-const quickActions = computed(() => {
-  const items: { label: string; description: string; to: string; icon: Component }[] = [
-    {
-      label: 'Profile Saya',
-      description: 'Kelola informasi akun',
-      to: '/profile',
-      icon: LayoutDashboard,
-    },
-  ]
-
-  if (user?.role === 'student') {
-    items.unshift({
-      label: 'Jelajahi Kelas',
-      description: 'Lihat dan ikuti kelas baru',
-      to: '/courses',
-      icon: Play,
-    })
-  }
-  if (user?.role === 'mentor') {
-    items.unshift({
-      label: 'Kelas Saya',
-      description: 'Kelola kelas yang Anda ajarkan',
-      to: '/mentor',
-      icon: Users,
-    })
-  }
-  if (user?.role === 'admin') {
-    items.unshift({
-      label: 'Panel Admin',
-      description: 'Kelola pengguna dan kelas',
-      to: '/admin',
-      icon: ShieldCheck,
-    })
-  }
-  return items
-})
+import { GraduationCap } from '@lucide/vue'
+import FeatureCard from '@/components/home/FeatureCard.vue'
+import ProgramsCard from '@/components/home/ProgramsCard.vue'
+import TestimonialCard from '@/components/home/TestimonialCard.vue'
+import ImageCarousel from '@/components/common/ImageCarousel.vue'
+import { carouselImages, features, programs, testimonials } from '@/constants/home'
 </script>
 
 <template>
-  <div v-if="isAuthenticated && user" class="flex flex-col gap-8">
-    <section
-      class="flex flex-col items-start gap-4 rounded-lg border border-border bg-gradient-to-br from-primary/10 to-transparent p-6 sm:flex-row sm:items-center sm:justify-between"
+  <!-- <div v-if="isAuthenticated && user" class="flex flex-col gap-8">
+    
+  </div> -->
+
+  <section class="gap-4 py-12 px-6 md:px-12 lg:px-24 max-w-full bg-gray-200 w-full">
+    <div
+      class="flex flex-col gap-4 items-center md:flex-row md:items-start md:justify-center md:gap-12 max-w-6xl mx-auto"
     >
-      <div class="flex items-center gap-4">
-        <span
-          class="flex h-14 w-14 items-center justify-center rounded-full bg-primary text-lg font-bold text-white"
-        >
-          {{ formatInitials(user.name) }}
-        </span>
-        <div>
-          <p class="text-sm text-text-soft">Selamat datang kembali</p>
-          <h1 class="text-2xl font-bold text-heading">{{ user.name }}</h1>
-          <span
-            class="mt-1 inline-flex items-center gap-1 rounded-full bg-primary/10 px-3 py-0.5 text-xs font-medium capitalize text-primary"
-          >
-            <GraduationCap :size="14" />
-            {{ user.role }}
-          </span>
-        </div>
-      </div>
-      <div class="flex flex-col gap-1 text-sm text-text-soft">
-        <span class="inline-flex items-center gap-1.5">
-          <TrendingUp :size="16" class="text-primary" />
-          Terus belajar, terus berkembang!
-        </span>
-      </div>
-    </section>
+      <div>
+        <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-heading mb-4 text-center sm:text-left">
+          Platform belajar online untuk
+          <span class="text-primary-400">meningkatkan keterampilan Anda</span>. Masuk untuk
+          mengakses kelas dan dashboard pribadi.
+        </h1>
+        <p class="text-text-soft text-center sm:text-left">
+          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Fugit aliquid quidem sit
+          voluptatum debitis perspiciatis.
+        </p>
 
-    <section class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-      <BaseCard v-for="stat in stats" :key="stat.label" class="flex items-center gap-4">
-        <span class="flex h-11 w-11 items-center justify-center rounded-lg" :class="stat.accent">
-          <component :is="stat.icon" :size="20" />
-        </span>
-        <div>
-          <p class="text-2xl font-bold text-heading">{{ stat.value }}</p>
-          <p class="text-sm text-text-soft">{{ stat.label }}</p>
-        </div>
-      </BaseCard>
-    </section>
-
-    <section class="flex flex-col gap-4">
-      <h2 class="text-lg font-semibold text-heading">Menu Cepat</h2>
-      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <RouterLink
-          v-for="action in quickActions"
-          :key="action.label"
-          :to="action.to"
-          class="group rounded-lg border border-border bg-surface p-5 no-underline transition-colors hover:border-primary/40 hover:bg-primary/5"
+        <div
+          class="flex flex-col sm:flex-row sm:justify-start sm:items-center sm:py-4 sm:px-8 mt-4 border-l-0 sm:border-l-4 border-primary sm:gap-16 gap-4"
         >
-          <div class="flex items-center justify-between">
-            <component :is="action.icon" :size="22" class="text-primary" />
-            <span
-              class="text-xs font-semibold text-primary opacity-0 transition-opacity group-hover:opacity-100"
-            >
-              Buka
-            </span>
+          <div class="">
+            <p class="text-gray-400">Trusted by</p>
+            <p class="font-semibold text-xl">500+ Parents</p>
           </div>
-          <h3 class="mt-4 font-semibold text-heading">{{ action.label }}</h3>
-          <p class="mt-1 text-sm text-text-soft">{{ action.description }}</p>
-        </RouterLink>
-      </div>
-    </section>
-
-    <section class="flex flex-col gap-4">
-      <h2 class="text-lg font-semibold text-heading">Kelas Terbaru</h2>
-      <BaseCard class="flex flex-col items-center gap-3 py-12 text-center">
-        <FileBadge :size="40" class="text-text-soft" />
-        <div>
-          <p class="font-medium text-heading">Belum ada kelas</p>
-          <p class="text-sm text-text-soft">Kelas yang Anda ikuti akan tampil di sini.</p>
+          <div>
+            <p class="text-gray-400">With offer</p>
+            <p class="font-semibold text-xl">25+ Lorem ipsum dolor sit amet</p>
+          </div>
         </div>
-      </BaseCard>
-    </section>
-  </div>
+      </div>
 
-  <div v-else class="flex flex-col gap-4">
-    <h1 class="text-2xl font-bold text-heading">Selamat datang di DevAcademy</h1>
-    <p class="text-text-soft">
-      Platform belajar online untuk meningkatkan keterampilan Anda. Masuk untuk mengakses kelas dan
-      dashboard pribadi.
-    </p>
-    <div>
-      <RouterLink
-        to="/login"
-        class="inline-flex rounded-md bg-primary px-4 py-2 text-sm font-semibold text-white no-underline"
-      >
-        Masuk
-      </RouterLink>
+      <img
+        src="https://placehold.co/600x600/EEE/31343C"
+        alt="bg"
+        class="border border-primary rounded-2xl w-full max-w-xs sm:max-w-sm lg:max-w-md relative z-10"
+      />
     </div>
-  </div>
+  </section>
+
+  <section
+    class="max-w-7xl mx-auto py-12 flex flex-col md:flex-row items-center border-y-2 mt-20 gap-10 md:gap-20 px-6"
+  >
+    <FeatureCard v-for="feature in features" :key="feature.title" v-bind="feature" />
+  </section>
+
+  <section id="about" class="max-w-7xl mx-auto py-12 flex flex-col gap-8">
+    <div class="flex flex-col lg:flex-row justify-center mx-auto w-full gap-10 lg:gap-20 px-6">
+      <div class="relative max-w-md lg:max-w-xl w-full aspect-[3/4] border border-primary">
+        <img
+          src="https://placehold.co/600x700/EEE/31343C"
+          alt="bg"
+          class="w-full h-full object-cover"
+        />
+        <div
+          class="absolute bg-primary text-white p-4 top-3/4 right-2 lg:-right-8 max-w-[15rem] lg:max-w-xs rounded-lg shadow-xl shadow-primary/50"
+        >
+          <p class="text-sm uppercase tracking-widest text-white/80 mb-1">About</p>
+          <h1 class="text-lg lg:text-2xl font-semibold leading-snug">
+            Unleash Students Possibilities with us
+          </h1>
+        </div>
+      </div>
+      <div class="flex flex-col max-w-xl text-justify">
+        <h3 class="text-xl font-normal text-primary mb-2">Welcome to</h3>
+        <h1 class="text-2xl lg:text-3xl font-semibold mb-4">
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+        </h1>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi et modi laborum mollitia
+          nemo ipsa quisquam recusandae culpa ut totam obcaecati, necessitatibus iste alias velit
+          itaque veniam, vitae repellendus laboriosam. Lorem ipsum dolor sit amet consectetur
+          adipisicing elit. Corporis, eaque! Similique, veritatis enim veniam iusto excepturi
+          molestiae quisquam sit sint, consequatur ullam voluptas, odio pariatur corporis vero
+          quaerat eius rerum. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officiis
+          temporibus doloremque debitis distinctio explicabo nam tempore obcaecati sit quibusdam
+          voluptates, quo repudiandae, rerum ipsam optio maiores! Nisi dolorem beatae aliquid.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo molestias eaque animi
+          voluptatum necessitatibus, qui labore quam at suscipit maxime quisquam nesciunt fuga
+          consectetur, sapiente optio consequatur, nulla vel possimus.
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus mollitia, quidem sapiente
+          enim facilis necessitatibus, reprehenderit totam provident, corrupti saepe omnis at neque.
+          Impedit optio iusto iste rerum quo blanditiis?
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="max-w-7xl mx-auto py-12 border-y-2 mt-20 gap-20">
+    <div class="text-center w-full flex flex-col">
+      <h1 class="text-primary font-normal text-xl">Testimonials</h1>
+      <h1 class="font-bold text-2xl">Parent Reviews</h1>
+      <div class="flex flex-row gap-4 items-stretch overflow-auto px-4 mt-12 max-h-96">
+        <TestimonialCard
+          v-for="(testimonial, i) in testimonials"
+          :key="i"
+          :name="testimonial.name"
+          :role="testimonial.role"
+          :testimonial="testimonial.testimonial"
+          :image="testimonial.image"
+          class="mt-4"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section id="programs" class="max-w-7xl mx-auto py-12">
+    <div class="text-center w-full flex flex-col">
+      <h1 class="text-primary font-normal text-xl">Exclusive</h1>
+      <h1 class="font-bold text-2xl">Join Our Programs</h1>
+      <p class="mt-4 text-text-soft">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.
+      </p>
+      <div class="flex flex-wrap justify-center items-stretch gap-4 mt-12 max-w-5xl mx-auto px-6">
+        <ProgramsCard
+          v-for="program in programs"
+          :key="program.id"
+          :program="program"
+          class="w-full sm:w-[calc((100%-1rem)/2)] lg:w-[calc((100%-2rem)/3)] h-72 sm:h-80"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="max-w-full bg-gray-100">
+    <div class="max-w-7xl mx-auto py-12">
+      <div class="text-center w-full flex flex-col items-center">
+        <h1 class="text-primary font-normal text-xl">Gallery</h1>
+        <h1 class="font-bold text-2xl">Our Activities</h1>
+        <p class="mt-4 text-text-soft max-w-xl">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quod.
+        </p>
+        <div class="w-full mt-8 px-4">
+          <ImageCarousel :images="carouselImages" alt="Activity" />
+        </div>
+      </div>
+    </div>
+  </section>
 </template>

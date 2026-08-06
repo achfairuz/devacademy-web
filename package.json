@@ -16,6 +16,7 @@
     "format": "prettier --write --experimental-cli src/"
   },
   "dependencies": {
+    "@hugeicons/vue": "^1.0.7",
     "@iconify-json/logos": "^1.2.11",
     "@iconify/vue": "^5.0.1",
     "@lucide/vue": "^1.28.0",
