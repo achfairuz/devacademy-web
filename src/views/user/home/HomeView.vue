@@ -88,8 +88,8 @@ const weekActivity = [
 ]
 
 const quickLinks: { label: string; to: string }[] = [
-  { label: 'Jelajahi Kelas', to: '/courses' },
-  { label: 'Profile Saya', to: '/profile' },
+  { label: 'Jelajahi Kelas', to: '/user/courses' },
+  { label: 'Profile Saya', to: '/user/profile' },
 ]
 </script>
 
@@ -164,7 +164,7 @@ const quickLinks: { label: string; to: string }[] = [
             <h2 class="text-lg font-semibold text-heading">Lanjutkan Belajar</h2>
             <p class="text-sm text-text-soft">Kelas yang sedang Anda ikuti</p>
           </div>
-          <RouterLink to="/courses" class="inline-flex items-center gap-1 text-sm font-medium text-primary">
+          <RouterLink to="/user/courses" class="inline-flex items-center gap-1 text-sm font-medium text-primary">
             Lihat semua
             <ChevronRight :size="16" />
           </RouterLink>

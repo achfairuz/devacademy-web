@@ -13,6 +13,29 @@ export const routes: RouteRecordRaw[] = [
         name: 'landing-page',
         component: () => import('@/views/home/LandingPageView.vue'),
       },
+      {
+        path: 'user/profile',
+        name: 'profile',
+        component: () => import('@/views/profile/ProfileView.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'user/subscription',
+        name: 'subscription',
+        component: () => import('@/views/user/subscription/SubscriptionView.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: 'user/coming-soon',
+        name: 'coming-soon',
+        component: () => import('@/views/error/ComingSoonView.vue'),
+        meta: { requiresAuth: true },
+      },
+      {
+        path: ':pathMatch(.*)*',
+        name: 'not-found',
+        component: () => import('@/views/error/NotFoundView.vue'),
+      },
     ],
   },
   {
@@ -35,7 +58,7 @@ export const routes: RouteRecordRaw[] = [
   },
   {
     path: '/user',
-    component: DefaultLayout,
+    component: () => import('@/layouts/user/UserLayout.vue'),
     meta: { requiresAuth: true, roles: ['student'] },
     name: 'user',
     children: [
@@ -44,11 +67,36 @@ export const routes: RouteRecordRaw[] = [
         name: 'dashboard',
         component: () => import('@/views/user/home/HomeView.vue'),
       },
+      {
+        path: 'learning',
+        name: 'learning',
+        component: () => import('@/views/user/learning/LearningView.vue'),
+      },
+      {
+        path: 'courses',
+        name: 'courses',
+        component: () => import('@/views/user/course/CourseView.vue'),
+      },
+      {
+        path: 'courses/:id',
+        name: 'course-detail',
+        component: () => import('@/views/user/course/CourseDetailView.vue'),
+      },
+      {
+        path: 'mentors',
+        name: 'mentors',
+        component: () => import('@/views/error/ComingSoonView.vue'),
+      },
+      {
+        path: 'mentor',
+        name: 'mentor',
+        component: () => import('@/views/error/ComingSoonView.vue'),
+      },
+      {
+        path: 'admin',
+        name: 'admin',
+        component: () => import('@/views/error/ComingSoonView.vue'),
+      },
     ],
-  },
-  {
-    path: '/:pathMatch(.*)*',
-    name: 'not-found',
-    component: () => import('@/views/error/NotFoundView.vue'),
   },
 ]
