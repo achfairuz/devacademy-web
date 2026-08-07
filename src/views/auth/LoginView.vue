@@ -32,9 +32,21 @@ async function onSubmit() {
   }
 }
 
-async function fillTestCredentials() {
-  form.email = 'test@gmail.com'
-  form.password = '12345678'
+async function fillTestCredentialsStudent() {
+  form.email = 'student@devacademy.com'
+  form.password = 'student123'
+  await onSubmit()
+}
+
+async function fillTestCredentialsMentor() {
+  form.email = 'mentor@devacademy.com'
+  form.password = 'mentor123'
+  await onSubmit()
+}
+
+async function fillTestCredentialsAdmin() {
+  form.email = 'admin@devacademy.com'
+  form.password = 'admin123'
   await onSubmit()
 }
 </script>
@@ -77,9 +89,26 @@ async function fillTestCredentials() {
           variant="secondary"
           class="w-full"
           :loading="loading"
-          @click="fillTestCredentials"
+          @click="fillTestCredentialsStudent"
         >
-          Login Test (test@gmail.com)
+          Login Student (student@devacademy.com)
+        </BaseButton>
+        <BaseButton
+          type="button"
+          variant="secondary"
+          class="w-full"
+          :loading="loading"
+          @click="fillTestCredentialsMentor"
+        >
+          Login Mentor (mentor@devacademy.com)
+        </BaseButton>
+        <BaseButton
+          type="button"
+          class="w-full bg-red-500"
+          :loading="loading"
+          @click="fillTestCredentialsAdmin"
+        >
+          Login Admin (admin@devacademy.com)
         </BaseButton>
       </div>
     </form>

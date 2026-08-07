@@ -1,6 +1,12 @@
 import router from '@/router'
 import { useAuthStore } from '@/stores/auth'
-import type { LoginPayload, RegisterPayload } from '@/models/auth'
+import type { LoginPayload, RegisterPayload, UserRole } from '@/models/auth'
+
+const roleDashboard: Record<UserRole, string> = {
+  student: '/user/dashboard',
+  mentor: '/mentor/dashboard',
+  admin: '/user/admin',
+}
 
 export function useAuthController() {
   const auth = useAuthStore()
@@ -12,7 +18,8 @@ export function useAuthController() {
       await router.push(redirect)
       return
     }
-    await router.push({ name: 'dashboard' })
+    const role = auth.user?.role ?? 'student'
+    await router.push(roleDashboard[role] ?? '/user/dashboard')
   }
 
   async function register(payload: RegisterPayload) {

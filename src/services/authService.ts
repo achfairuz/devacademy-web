@@ -11,7 +11,7 @@ export const authService = {
   },
 
   setSession(accessToken: string, user: User) {
-    if (accessToken && user.name) {
+    if (accessToken && (user.id || user.email)) {
       localStorage.setItem(TOKEN_KEY, accessToken)
       localStorage.setItem(USER_KEY, JSON.stringify(user))
     }
@@ -26,7 +26,7 @@ export const authService = {
     if (!raw) return null
     try {
       const user = JSON.parse(raw) as User
-      if (!user || !user.name) return null
+      if (!user || (!user.name && !user.id)) return null
       return user
     } catch {
       return null

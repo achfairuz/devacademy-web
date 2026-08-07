@@ -15,13 +15,25 @@ interface RawAuthData {
   user: RawUser
 }
 
-function toUser(raw: RawUser): User {
+const ROLES: UserRole[] = ['admin', 'mentor', 'student']
+
+function toRole(value: string | undefined): UserRole {
+  const role = value?.trim().toLowerCase() as UserRole
+  return ROLES.includes(role) ? role : 'student'
+}
+
+type UserLike = Partial<RawUser> &
+  Partial<Pick<User, 'id' | 'name' | 'email' | 'role' | 'avatar'>> & {
+    FullName?: string
+  }
+
+function toUser(raw: UserLike): User {
   return {
-    id: raw.ID,
-    name: raw.Name,
-    email: raw.Email,
-    role: raw.Role as UserRole,
-    avatar: raw.Avatar,
+    id: raw.ID ?? raw.id ?? '',
+    name: raw.FullName ?? raw.Name ?? raw.name ?? '',
+    email: raw.Email ?? raw.email ?? '',
+    role: toRole(raw.Role ?? raw.role),
+    avatar: raw.Avatar ?? raw.avatar,
   }
 }
 
@@ -42,5 +54,5 @@ export async function register(payload: RegisterPayload): Promise<{ message: str
 }
 
 export function fetchCurrentUser(): Promise<User> {
-  return request<User>('/auth/me')
+  return request<RawUser | User>('/auth/me').then((raw) => toUser(raw))
 }

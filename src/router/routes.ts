@@ -87,14 +87,52 @@ export const routes: RouteRecordRaw[] = [
         component: () => import('@/views/error/ComingSoonView.vue'),
       },
       {
-        path: 'mentor',
-        name: 'mentor',
-        component: () => import('@/views/error/ComingSoonView.vue'),
-      },
-      {
         path: 'admin',
         name: 'admin',
         component: () => import('@/views/error/ComingSoonView.vue'),
+      },
+    ],
+  },
+  {
+    path: '/mentor',
+    component: () => import('@/layouts/mentor/MentorLayout.vue'),
+    meta: { requiresAuth: true, roles: ['mentor'] },
+    name: 'mentor',
+    children: [
+      {
+        path: 'dashboard',
+        name: 'mentor-dashboard',
+        component: () => import('@/views/mentor/dashboard/MentorDashboardView.vue'),
+      },
+      {
+        path: 'courses',
+        name: 'mentor-courses',
+        component: () => import('@/views/mentor/course/MentorCoursesView.vue'),
+      },
+      {
+        path: 'categories',
+        name: 'mentor-categories',
+        component: () => import('@/views/mentor/category/AddCategoryView.vue'),
+      },
+      {
+        path: 'schedule',
+        name: 'mentor-schedule',
+        component: () => import('@/views/error/ComingSoonView.vue'),
+      },
+      {
+        path: 'students',
+        name: 'mentor-students',
+        component: () => import('@/views/error/ComingSoonView.vue'),
+      },
+      {
+        path: 'reviews',
+        name: 'mentor-reviews',
+        component: () => import('@/views/error/ComingSoonView.vue'),
+      },
+      {
+        path: 'profile',
+        name: 'mentor-profile',
+        component: () => import('@/views/profile/ProfileView.vue'),
       },
     ],
   },

@@ -1,6 +1,7 @@
 import type { Router } from 'vue-router'
 
 import { useAuthStore } from '@/stores/auth'
+import type { User } from '@/models/auth'
 
 export function setupRouterGuards(router: Router) {
   router.beforeEach((to) => {
@@ -11,7 +12,8 @@ export function setupRouterGuards(router: Router) {
     }
 
     const roles = to.matched.flatMap((record) => record.meta.roles ?? [])
-    if (roles.length > 0 && (auth.user == null || !roles.includes(auth.user.role))) {
+    const userRole = auth.user?.role?.trim().toLowerCase()
+    if (roles.length > 0 && (userRole == null || !roles.includes(userRole as User['role']))) {
       return { name: 'landing-page' }
     }
 

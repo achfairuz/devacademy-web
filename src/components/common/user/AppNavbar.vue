@@ -71,11 +71,10 @@ const navItems: NavItem[] = [
     query: { feature: 'Mentors' },
   },
   {
-    label: 'Mengajar',
-    to: prefix.value + '/mentor',
+    label: 'Dashboard Mentor',
+    to: '/mentor/dashboard',
     icon: Users,
     roles: ['mentor'],
-    query: { feature: 'Mengajar' },
   },
   {
     label: 'Admin',

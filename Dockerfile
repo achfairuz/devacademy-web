@@ -1,9 +1,12 @@
-FROM node:24-alpine AS build
+FROM node:24-slim AS build
 
 WORKDIR /app
 
 COPY package.json package-lock.json ./
-RUN npm ci
+COPY node_modules ./node_modules
+
+ARG SKIP_INSTALL=false
+RUN if [ "$SKIP_INSTALL" = "true" ]; then echo "skip npm ci (offline)"; else npm ci; fi
 
 COPY . .
 

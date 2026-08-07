@@ -10,6 +10,11 @@ const featureName = computed(() => {
   return name || 'Fitur'
 })
 
+const fallback = computed(() => {
+  if (route.path.startsWith('/mentor')) return '/mentor/dashboard'
+  return '/user/dashboard'
+})
+
 const featureLists: { title: string; description: string }[] = [
   { title: 'Jadwal & Materi', description: 'Akses jadwal kelas dan materi pembelajaran yang terstruktur.' },
   { title: 'Quiz & Evaluasi', description: 'Uji pemahaman Anda melalui kuis interaktif dan evaluasi berkala.' },
@@ -58,7 +63,7 @@ const featureLists: { title: string; description: string }[] = [
 
       <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
         <RouterLink
-          :to="route.query.from ? String(route.query.from) : '/user/dashboard'"
+          :to="route.query.from ? String(route.query.from) : fallback"
           class="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-semibold text-white no-underline transition-opacity hover:opacity-90"
         >
           <ArrowRight :size="16" />
