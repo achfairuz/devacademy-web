@@ -4,6 +4,7 @@ import {
   CircleAlert,
   Layers,
   MoreHorizontal,
+  Pencil,
   Plus,
   Search,
   Star,
@@ -15,6 +16,10 @@ import { computed, ref } from 'vue'
 
 import BaseButton from '@/components/base/BaseButton.vue'
 import BaseCard from '@/components/base/BaseCard.vue'
+import BaseConfirmModal from '@/components/base/BaseConfirmModal.vue'
+import BaseInput from '@/components/base/BaseInput.vue'
+import BaseModal from '@/components/base/BaseModal.vue'
+import BaseToast from '@/components/base/BaseToast.vue'
 import BaseToggle from '@/components/base/BaseToggle.vue'
 
 type CourseStatus = 'published' | 'draft'
@@ -115,8 +120,98 @@ function toggleStatus(id: string) {
   course.status = course.status === 'published' ? 'draft' : 'published'
 }
 
-function removeCourse(id: string) {
-  courses.value = courses.value.filter((course) => course.id !== id)
+const isAddModalOpen = ref(false)
+const editingCourse = ref<MentorCourse | null>(null)
+const addForm = ref({
+  title: '',
+  category: '',
+  level: 'Pemula' as MentorCourse['level'],
+  price: '',
+})
+const addError = ref<string | null>(null)
+
+const toDelete = ref<MentorCourse | null>(null)
+const toast = ref<{ message: string; type?: 'success' | 'error' | 'info' } | null>(null)
+
+const courseColors = ['bg-primary-500', 'bg-secondary-500', 'bg-emerald-500', 'bg-blue-500', 'bg-amber-500']
+
+const courseModalTitle = computed(() => (editingCourse.value ? 'Edit Kelas' : 'Tambah Kelas'))
+const courseModalDescription = computed(() =>
+  editingCourse.value
+    ? 'Perbarui informasi kelas ini agar tetap relevan dan menarik.'
+    : 'Lengkapi informasi kelas baru untuk Anda kelola.',
+)
+const deleteCourseDescription = computed(() =>
+  toDelete.value
+    ? `Kelas "${toDelete.value.title}" beserta seluruh materinya akan dihapus permanen. Tindakan ini tidak bisa dibatalkan.`
+    : '',
+)
+
+function showToast(message: string, type: 'success' | 'error' | 'info' = 'success') {
+  toast.value = { message, type }
+}
+
+function openAddModal() {
+  editingCourse.value = null
+  addError.value = null
+  addForm.value = { title: '', category: '', level: 'Pemula', price: '' }
+  isAddModalOpen.value = true
+}
+
+function openEditModal(course: MentorCourse) {
+  editingCourse.value = course
+  addError.value = null
+  addForm.value = {
+    title: course.title,
+    category: course.category,
+    level: course.level,
+    price: course.price,
+  }
+  isAddModalOpen.value = true
+}
+
+function submitCourse() {
+  if (!addForm.value.title.trim() || !addForm.value.category.trim() || !addForm.value.price.trim()) {
+    addError.value = 'Lengkapi semua kolom terlebih dahulu ya.'
+    return
+  }
+
+  if (editingCourse.value) {
+    const course = courses.value.find((item) => item.id === editingCourse.value?.id)
+    if (course) {
+      course.title = addForm.value.title.trim()
+      course.category = addForm.value.category.trim()
+      course.level = addForm.value.level
+      course.price = addForm.value.price.trim()
+    }
+    showToast('Kelas berhasil diperbarui. Tetap semangat mengajar!')
+  } else {
+    courses.value.unshift({
+      id: `course-${Date.now()}`,
+      title: addForm.value.title.trim(),
+      category: addForm.value.category.trim(),
+      level: addForm.value.level,
+      students: 0,
+      rating: 0,
+      status: 'draft',
+      price: addForm.value.price.trim(),
+      color: courseColors[courses.value.length % courseColors.length] ?? 'bg-primary-500',
+    })
+    showToast('Kelas baru berhasil dibuat. Selamat mengajar!')
+  }
+  isAddModalOpen.value = false
+}
+
+function requestDelete(course: MentorCourse) {
+  toDelete.value = course
+}
+
+function confirmDelete() {
+  if (!toDelete.value) return
+  const target = toDelete.value
+  courses.value = courses.value.filter((course) => course.id !== target.id)
+  showToast(`Kelas "${target.title}" berhasil dihapus.`)
+  toDelete.value = null
 }
 </script>
 
@@ -136,7 +231,7 @@ function removeCourse(id: string) {
           <Layers :size="16" />
           Kategori
         </RouterLink>
-        <BaseButton>
+        <BaseButton @click="openAddModal">
           <Plus :size="16" />
           Tambah Kelas
         </BaseButton>
@@ -267,9 +362,17 @@ function removeCourse(id: string) {
                   </button>
                   <button
                     type="button"
+                    class="rounded-md p-2 text-text-soft transition-colors hover:bg-primary-50 hover:text-primary"
+                    :aria-label="`Edit ${course.title}`"
+                    @click="openEditModal(course)"
+                  >
+                    <Pencil :size="16" />
+                  </button>
+                  <button
+                    type="button"
                     class="rounded-md p-2 text-text-soft transition-colors hover:bg-red-50 hover:text-red-600"
                     :aria-label="`Hapus ${course.title}`"
-                    @click="removeCourse(course.id)"
+                    @click="requestDelete(course)"
                   >
                     <Trash2 :size="16" />
                   </button>
@@ -286,5 +389,84 @@ function removeCourse(id: string) {
         <p class="text-sm text-text-soft">Coba ubah kata kunci atau filter yang dipilih.</p>
       </div>
     </BaseCard>
+
+    <BaseModal
+      v-model="isAddModalOpen"
+      :title="courseModalTitle"
+      :description="courseModalDescription"
+      size="md"
+    >
+      <form id="add-course-form" class="flex flex-col gap-4" @submit.prevent="submitCourse">
+        <BaseInput
+          id="course-title"
+          v-model="addForm.title"
+          label="Judul Kelas"
+          placeholder="cth: Fundamental JavaScript"
+          required
+        />
+        <BaseInput
+          id="course-category"
+          v-model="addForm.category"
+          label="Kategori"
+          placeholder="cth: Programming"
+          required
+        />
+        <div class="flex flex-col gap-1.5">
+          <span class="text-sm">Level</span>
+          <div class="flex flex-wrap gap-2">
+            <button
+              v-for="option in ['Pemula', 'Menengah', 'Mahir'] as const"
+              :key="option"
+              type="button"
+              class="rounded-md border px-3.5 py-2 text-sm font-medium transition-colors"
+              :class="
+                addForm.level === option
+                  ? 'border-primary bg-primary-50 text-primary'
+                  : 'border-border text-text-soft hover:border-primary/40 hover:text-primary'
+              "
+              @click="addForm.level = option"
+            >
+              {{ option }}
+            </button>
+          </div>
+        </div>
+        <BaseInput
+          id="course-price"
+          v-model="addForm.price"
+          label="Harga"
+          placeholder="cth: Rp 199.000"
+          required
+        />
+        <p v-if="addError" class="text-sm text-red-600">{{ addError }}</p>
+      </form>
+
+      <template #footer>
+        <BaseButton
+          type="button"
+          variant="secondary"
+          class="!bg-gray-100 !text-text"
+          @click="isAddModalOpen = false"
+        >
+          Batal
+        </BaseButton>
+        <BaseButton type="submit" form="add-course-form">
+          <component :is="editingCourse ? Pencil : Plus" :size="16" />
+          {{ editingCourse ? 'Simpan Perubahan' : 'Simpan Kelas' }}
+        </BaseButton>
+      </template>
+    </BaseModal>
+
+    <BaseConfirmModal
+      :model-value="toDelete != null"
+      title="Hapus Kelas Ini?"
+      :description="deleteCourseDescription"
+      confirm-text="Ya, Hapus Kelas"
+      cancel-text="Batal"
+      variant="danger"
+      @update:model-value="(value) => { if (!value) toDelete = null }"
+      @confirm="confirmDelete"
+    />
+
+    <BaseToast :toast="toast" @close="toast = null" />
   </div>
 </template>

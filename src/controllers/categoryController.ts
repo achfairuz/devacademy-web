@@ -20,7 +20,7 @@ export function useCategoryController() {
     }
   }
 
-  async function addCategory(payload: { name: string }): Promise<Category> {
+  async function addCategory(payload: { name: string; icon?: string }): Promise<Category> {
     const created = await createCategoryRequest(payload)
     categories.value = [...categories.value, created]
     return created

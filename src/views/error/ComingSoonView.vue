@@ -12,6 +12,7 @@ const featureName = computed(() => {
 
 const fallback = computed(() => {
   if (route.path.startsWith('/mentor')) return '/mentor/dashboard'
+  if (route.path.startsWith('/admin')) return '/admin/categories'
   return '/user/dashboard'
 })
 

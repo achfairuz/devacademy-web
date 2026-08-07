@@ -1,4 +1,5 @@
 import { request } from '@/api/http'
+import { endpoints } from '@/constants/endpoint'
 import type { ApiResponse } from '@/models/api'
 import type { AuthData, LoginPayload, RegisterPayload, User, UserRole } from '@/models/auth'
 
@@ -38,7 +39,7 @@ function toUser(raw: UserLike): User {
 }
 
 export async function login(payload: LoginPayload): Promise<AuthData> {
-  const response = await request<ApiResponse<RawAuthData>>('/auth/login', {
+  const response = await request<ApiResponse<RawAuthData>>(endpoints.auth.login, {
     method: 'POST',
     body: payload,
   })
@@ -46,7 +47,7 @@ export async function login(payload: LoginPayload): Promise<AuthData> {
 }
 
 export async function register(payload: RegisterPayload): Promise<{ message: string }> {
-  const response = await request<ApiResponse<RawAuthData>>('/auth/register', {
+  const response = await request<ApiResponse<RawAuthData>>(endpoints.auth.register, {
     method: 'POST',
     body: payload,
   })
@@ -54,5 +55,5 @@ export async function register(payload: RegisterPayload): Promise<{ message: str
 }
 
 export function fetchCurrentUser(): Promise<User> {
-  return request<RawUser | User>('/auth/me').then((raw) => toUser(raw))
+  return request<RawUser | User>(endpoints.auth.me).then((raw) => toUser(raw))
 }

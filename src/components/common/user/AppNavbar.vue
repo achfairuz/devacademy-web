@@ -78,10 +78,9 @@ const navItems: NavItem[] = [
   },
   {
     label: 'Admin',
-    to: prefix.value + '/admin',
+    to: '/admin/categories',
     icon: ShieldCheck,
     roles: ['admin'],
-    query: { feature: 'Admin' },
   },
 ]
 

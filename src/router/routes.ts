@@ -94,6 +94,44 @@ export const routes: RouteRecordRaw[] = [
     ],
   },
   {
+    path: '/admin',
+    component: () => import('@/layouts/admin/AdminLayout.vue'),
+    meta: { requiresAuth: true, roles: ['admin'] },
+    name: 'admin',
+    children: [
+      {
+        path: 'dashboard',
+        name: 'admin-dashboard',
+        component: () => import('@/views/error/ComingSoonView.vue'),
+      },
+      {
+        path: 'categories',
+        name: 'admin-categories',
+        component: () => import('@/views/admin/category/AdminCategoryView.vue'),
+      },
+      {
+        path: 'courses',
+        name: 'admin-courses',
+        component: () => import('@/views/error/ComingSoonView.vue'),
+      },
+      {
+        path: 'students',
+        name: 'admin-students',
+        component: () => import('@/views/error/ComingSoonView.vue'),
+      },
+      {
+        path: 'reviews',
+        name: 'admin-reviews',
+        component: () => import('@/views/error/ComingSoonView.vue'),
+      },
+      {
+        path: 'profile',
+        name: 'admin-profile',
+        component: () => import('@/views/profile/ProfileView.vue'),
+      },
+    ],
+  },
+  {
     path: '/mentor',
     component: () => import('@/layouts/mentor/MentorLayout.vue'),
     meta: { requiresAuth: true, roles: ['mentor'] },

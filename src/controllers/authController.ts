@@ -5,7 +5,7 @@ import type { LoginPayload, RegisterPayload, UserRole } from '@/models/auth'
 const roleDashboard: Record<UserRole, string> = {
   student: '/user/dashboard',
   mentor: '/mentor/dashboard',
-  admin: '/user/admin',
+  admin: '/admin/categories',
 }
 
 export function useAuthController() {
