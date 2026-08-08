@@ -15,8 +15,8 @@ import BaseButton from '@/components/base/BaseButton.vue'
 import BaseDrawer from '@/components/base/BaseDrawer.vue'
 import BaseInput from '@/components/base/BaseInput.vue'
 import BaseTabs from '@/components/base/BaseTabs.vue'
-import BaseTextarea from '@/components/base/BaseTextarea.vue'
 import BaseToggle from '@/components/base/BaseToggle.vue'
+import RichTextEditor from '@/components/base/RichTextEditor.vue'
 import AssignmentEditor from '@/components/course-builder/AssignmentEditor.vue'
 import QuizEditor from '@/components/course-builder/QuizEditor.vue'
 import {
@@ -138,11 +138,11 @@ function save() {
           required
           :error="titleError"
         />
-        <BaseTextarea
+        <RichTextEditor
           v-model="draft.description"
           label="Deskripsi"
           placeholder="Jelaskan tujuan dan isi lesson ini..."
-          :rows="4"
+          min-height="140px"
         />
         <BaseInput
           v-model="draft.video_url"

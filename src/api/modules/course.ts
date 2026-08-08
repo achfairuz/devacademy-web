@@ -15,21 +15,6 @@ import type {
   Section,
 } from '@/models/course'
 
-function toCourse(raw: Course): Course {
-  const sections = (raw.sections ?? []).map((section) => ({
-    ...section,
-    order_number: section.order_number ?? 0,
-    lessons: (section.lessons ?? []).map((lesson) => ({
-      ...lesson,
-      duration: lesson.duration ?? 0,
-      order_number: lesson.order_number ?? 0,
-      is_preview: lesson.is_preview ?? false,
-      files: lesson.files ?? [],
-    })),
-  }))
-  return { ...raw, status: raw.status ?? 'draft', sections }
-}
-
 interface RawCourse {
   ID: string
   MentorID: string
@@ -46,7 +31,7 @@ interface RawCourse {
   Level?: { ID: string; Name: string; Slug: string } | null
 }
 
-function toListCourse(raw: RawCourse): Course {
+function toCourse(raw: RawCourse): Course {
   const level =
     raw.Level?.Slug === 'intermediate' || raw.Level?.Slug === 'advanced'
       ? raw.Level.Slug
@@ -69,11 +54,11 @@ function toListCourse(raw: RawCourse): Course {
 export const courseApi = {
   async list(): Promise<Course[]> {
     const response = await request<ApiResponse<RawCourse[]>>(endpoints.courses.list)
-    return (response.data ?? []).map(toListCourse)
+    return (response.data ?? []).map(toCourse)
   },
 
   async create(payload: CoursePayload): Promise<Course> {
-    const response = await request<ApiResponse<Course>>(endpoints.courses.list, {
+    const response = await request<ApiResponse<RawCourse>>(endpoints.courses.list, {
       method: 'POST',
       body: payload,
     })
@@ -81,12 +66,12 @@ export const courseApi = {
   },
 
   async get(id: string): Promise<Course> {
-    const response = await request<ApiResponse<Course>>(endpoints.courses.detail(id))
+    const response = await request<ApiResponse<RawCourse>>(endpoints.courses.detail(id))
     return toCourse(response.data)
   },
 
   async update(id: string, payload: CoursePayload): Promise<Course> {
-    const response = await request<ApiResponse<Course>>(endpoints.courses.detail(id), {
+    const response = await request<ApiResponse<RawCourse>>(endpoints.courses.detail(id), {
       method: 'PUT',
       body: payload,
     })

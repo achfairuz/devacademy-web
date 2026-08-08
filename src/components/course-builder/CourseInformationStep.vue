@@ -5,7 +5,7 @@ import { computed, ref } from 'vue'
 import BaseCard from '@/components/base/BaseCard.vue'
 import BaseInput from '@/components/base/BaseInput.vue'
 import BaseSelect from '@/components/base/BaseSelect.vue'
-import BaseTextarea from '@/components/base/BaseTextarea.vue'
+import RichTextEditor from '@/components/base/RichTextEditor.vue'
 import { useCategories } from '@/hooks/useCategories'
 import type { CourseBuilder } from '@/hooks/useCourseBuilder'
 import { COURSE_LEVELS } from '@/models/course'
@@ -88,12 +88,12 @@ function removeThumbnail() {
         :error="builder.infoErrors.title"
       />
 
-      <BaseTextarea
+      <RichTextEditor
         id="course-description"
         v-model="builder.course.description"
         label="Deskripsi"
         placeholder="Jelaskan apa yang akan dipelajari siswa di course ini..."
-        :rows="5"
+        min-height="200px"
         required
         :error="builder.infoErrors.description"
       />

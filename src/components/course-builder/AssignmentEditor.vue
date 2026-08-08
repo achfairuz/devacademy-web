@@ -2,7 +2,7 @@
 import { CalendarClock } from '@lucide/vue'
 
 import BaseInput from '@/components/base/BaseInput.vue'
-import BaseTextarea from '@/components/base/BaseTextarea.vue'
+import RichTextEditor from '@/components/base/RichTextEditor.vue'
 import type { Assignment } from '@/models/course'
 
 defineProps<{
@@ -14,11 +14,11 @@ defineProps<{
   <div class="flex flex-col gap-4">
     <BaseInput v-model="assignment.title" label="Judul Assignment" placeholder="cth: Tugas Membuat Routing Sederhana" />
 
-    <BaseTextarea
+    <RichTextEditor
       v-model="assignment.description"
       label="Deskripsi"
       placeholder="Jelaskan instruksi pengerjaan assignment..."
-      :rows="4"
+      min-height="140px"
     />
 
     <div class="flex flex-col gap-1">
