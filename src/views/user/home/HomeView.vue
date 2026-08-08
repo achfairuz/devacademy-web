@@ -28,7 +28,7 @@ const { user } = useAuthController()
 const router = useRouter()
 
 const stats: { label: string; value: string; icon: Component; accent: string }[] = [
-  { label: 'Kelas Diikuti', value: '3', icon: BookOpen, accent: 'bg-blue-50 text-blue-600' },
+  { label: 'Kursus Diikuti', value: '3', icon: BookOpen, accent: 'bg-blue-50 text-blue-600' },
   { label: 'Sertifikat', value: '1', icon: Award, accent: 'bg-emerald-50 text-emerald-600' },
   { label: 'Poin Belajar', value: '240', icon: Star, accent: 'bg-amber-50 text-amber-600' },
   { label: 'Hari Streak', value: '12', icon: Flame, accent: 'bg-orange-50 text-orange-500' },
@@ -88,7 +88,7 @@ const weekActivity = [
 ]
 
 const quickLinks: { label: string; to: string }[] = [
-  { label: 'Jelajahi Kelas', to: '/user/courses' },
+  { label: 'Jelajahi Kursus', to: '/user/courses' },
   { label: 'Profile Saya', to: '/user/profile' },
 ]
 </script>
@@ -162,7 +162,7 @@ const quickLinks: { label: string; to: string }[] = [
         <div class="flex items-center justify-between">
           <div>
             <h2 class="text-lg font-semibold text-heading">Lanjutkan Belajar</h2>
-            <p class="text-sm text-text-soft">Kelas yang sedang Anda ikuti</p>
+            <p class="text-sm text-text-soft">Kursus yang sedang Anda ikuti</p>
           </div>
           <RouterLink to="/user/courses" class="inline-flex items-center gap-1 text-sm font-medium text-primary">
             Lihat semua

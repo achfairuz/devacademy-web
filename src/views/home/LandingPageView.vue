@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { GraduationCap } from '@lucide/vue'
 import FeatureCard from '@/components/home/FeatureCard.vue'
 import ProgramsCard from '@/components/home/ProgramsCard.vue'
 import TestimonialCard from '@/components/home/TestimonialCard.vue'
@@ -20,7 +19,7 @@ import { carouselImages, features, programs, testimonials } from '@/constants/ho
         <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-heading mb-4 text-center sm:text-left">
           Platform belajar online untuk
           <span class="text-primary-400">meningkatkan keterampilan Anda</span>. Masuk untuk
-          mengakses kelas dan dashboard pribadi.
+          mengakses kursus dan dashboard pribadi.
         </h1>
         <p class="text-text-soft text-center sm:text-left">
           Lorem ipsum dolor sit, amet consectetur adipisicing elit. Fugit aliquid quidem sit

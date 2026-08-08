@@ -28,5 +28,13 @@ export default defineConfigWithVueTs(
 
   ...pluginOxlint.buildFromOxlintConfigFile('.oxlintrc.json'),
 
+  {
+    name: 'app/course-builder-store-pattern',
+    files: ['src/components/course-builder/**/*.vue', 'src/views/mentor/course/**/*.vue'],
+    rules: {
+      'vue/no-mutating-props': 'off',
+    },
+  },
+
   skipFormatting,
 )

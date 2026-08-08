@@ -232,13 +232,13 @@ const lessonIcon = (type: Lesson['type']) =>
               class="inline-flex w-full items-center justify-center gap-2 rounded-md bg-primary px-4 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
             >
               <BookOpen :size="16" />
-              {{ course.progress > 0 ? 'Lanjut Belajar' : 'Daftar Kelas' }}
+              {{ course.progress > 0 ? 'Lanjut Belajar' : 'Daftar Kursus' }}
             </button>
           </div>
         </BaseCard>
 
         <BaseCard class="!p-6">
-          <h3 class="font-semibold text-heading">Kelas Lainnya</h3>
+          <h3 class="font-semibold text-heading">Kursus Lainnya</h3>
           <div class="mt-4 flex flex-col gap-3">
             <RouterLink
               v-for="related in courses.filter((item) => item.id !== course?.id).slice(0, 3)"

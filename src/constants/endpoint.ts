@@ -8,4 +8,27 @@ export const endpoints = {
     list: '/categories',
     detail: (id: string) => `/categories/${id}`,
   },
+  courses: {
+    list: '/courses',
+    detail: (id: string) => `/courses/${id}`,
+    status: (slug: string) => `/courses/slug/${slug}/status`,
+    sections: (courseId: string) => `/courses/${courseId}/sections`,
+    sectionDetail: (courseId: string, sectionId: string) => `/courses/${courseId}/sections/${sectionId}`,
+    lessons: (courseId: string, sectionId: string) =>
+      `/courses/${courseId}/sections/${sectionId}/lessons`,
+    lessonDetail: (courseId: string, sectionId: string, lessonId: string) =>
+      `/courses/${courseId}/sections/${sectionId}/lessons/${lessonId}`,
+    lessonFiles: (courseId: string, sectionId: string, lessonId: string) =>
+      `/courses/${courseId}/sections/${sectionId}/lessons/${lessonId}/files`,
+    lessonFileDetail: (courseId: string, sectionId: string, lessonId: string, fileId: string) =>
+      `/courses/${courseId}/sections/${sectionId}/lessons/${lessonId}/files/${fileId}`,
+    lessonQuiz: (courseId: string, sectionId: string, lessonId: string) =>
+      `/courses/${courseId}/sections/${sectionId}/lessons/${lessonId}/quizzes`,
+    quizDetail: (courseId: string, sectionId: string, lessonId: string, quizId: string) =>
+      `/courses/${courseId}/sections/${sectionId}/lessons/${lessonId}/quizzes/${quizId}`,
+    lessonAssignment: (courseId: string, sectionId: string, lessonId: string) =>
+      `/courses/${courseId}/sections/${sectionId}/lessons/${lessonId}/assignments`,
+    assignmentDetail: (courseId: string, sectionId: string, lessonId: string, assignmentId: string) =>
+      `/courses/${courseId}/sections/${sectionId}/lessons/${lessonId}/assignments/${assignmentId}`,
+  },
 } as const

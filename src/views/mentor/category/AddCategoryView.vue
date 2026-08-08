@@ -26,10 +26,10 @@ const sortedCategories = computed(() =>
           class="inline-flex w-fit items-center gap-1 text-sm font-medium text-text-soft no-underline transition-colors hover:text-primary"
         >
           <ArrowLeft :size="15" />
-          Kembali ke Kelas
+          Kembali ke Kursus
         </RouterLink>
         <h1 class="text-2xl font-bold text-heading">Kategori</h1>
-        <p class="text-sm text-text-soft">Jelajahi kategori yang tersedia untuk kelas Anda</p>
+        <p class="text-sm text-text-soft">Jelajahi kategori yang tersedia untuk kursus Anda</p>
       </div>
 
       <p

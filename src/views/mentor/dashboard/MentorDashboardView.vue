@@ -25,7 +25,7 @@ const { user } = useAuthController()
 
 const stats: { label: string; value: string; icon: Component; accent: string }[] = [
   { label: 'Total Siswa', value: '128', icon: Users, accent: 'bg-blue-50 text-blue-600' },
-  { label: 'Kelas Aktif', value: '5', icon: BookOpen, accent: 'bg-primary-50 text-primary' },
+  { label: 'Kursus Aktif', value: '5', icon: BookOpen, accent: 'bg-primary-50 text-primary' },
   { label: 'Pendapatan', value: 'Rp 8,4jt', icon: Wallet, accent: 'bg-emerald-50 text-emerald-600' },
   { label: 'Rating', value: '4.9', icon: Star, accent: 'bg-amber-50 text-amber-500' },
 ]
@@ -67,9 +67,9 @@ const courses: MentorCourse[] = [
 ]
 
 const schedule = [
-  { day: 'Senin', time: '09:00 - 11:00', course: 'Fundamental JavaScript', class: 'Kelas A' },
-  { day: 'Rabu', time: '13:00 - 15:00', course: 'UI/UX Design Dasar', class: 'Kelas B' },
-  { day: 'Jumat', time: '10:00 - 12:00', course: 'Database & SQL', class: 'Kelas A' },
+  { day: 'Senin', time: '09:00 - 11:00', course: 'Fundamental JavaScript', class: 'Reguler A' },
+  { day: 'Rabu', time: '13:00 - 15:00', course: 'UI/UX Design Dasar', class: 'Reguler B' },
+  { day: 'Jumat', time: '10:00 - 12:00', course: 'Database & SQL', class: 'Reguler A' },
 ]
 
 const recentReviews = [
@@ -121,7 +121,7 @@ const recentReviews = [
           </div>
           <BaseButton variant="secondary" class="!bg-white !text-primary-700 hover:!bg-white/90">
             <Play :size="16" />
-            Buat Kelas Baru
+            Buat Kursus Baru
           </BaseButton>
         </div>
       </div>
@@ -143,8 +143,8 @@ const recentReviews = [
       <div class="flex flex-col gap-6 lg:col-span-2">
         <div class="flex items-center justify-between">
           <div>
-            <h2 class="text-lg font-semibold text-heading">Kelas yang Saya Ajar</h2>
-            <p class="text-sm text-text-soft">Kelas aktif yang sedang berlangsung</p>
+            <h2 class="text-lg font-semibold text-heading">Kursus yang Saya Ajar</h2>
+            <p class="text-sm text-text-soft">Kursus aktif yang sedang berlangsung</p>
           </div>
           <RouterLink
             to="/mentor/courses"

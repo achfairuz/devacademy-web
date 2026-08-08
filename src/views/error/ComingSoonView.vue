@@ -17,7 +17,7 @@ const fallback = computed(() => {
 })
 
 const featureLists: { title: string; description: string }[] = [
-  { title: 'Jadwal & Materi', description: 'Akses jadwal kelas dan materi pembelajaran yang terstruktur.' },
+  { title: 'Jadwal & Materi', description: 'Akses jadwal kursus dan materi pembelajaran yang terstruktur.' },
   { title: 'Quiz & Evaluasi', description: 'Uji pemahaman Anda melalui kuis interaktif dan evaluasi berkala.' },
   { title: 'Sertifikat', description: 'Dapatkan sertifikat setelah menyelesaikan course yang Anda ikuti.' },
 ]

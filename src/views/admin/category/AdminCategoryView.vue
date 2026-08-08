@@ -35,7 +35,7 @@ const remaining = computed(() => name.value.trim().length)
 
 const deleteDescription = computed(() =>
   toDelete.value
-    ? `Kategori "${toDelete.value.name}" akan dihapus permanen. Pastikan tidak ada kelas yang masih memakainya.`
+    ? `Kategori "${toDelete.value.name}" akan dihapus permanen. Pastikan tidak ada kursus yang masih memakainya.`
     : '',
 )
 
@@ -79,11 +79,11 @@ async function confirmDelete() {
   deleteError.value = null
   try {
     await removeCategory(target.id)
-    showToast('Kategori berhasil dihapus. Kelas Anda makin rapi!')
+    showToast('Kategori berhasil dihapus. Kursus Anda makin rapi!')
     toDelete.value = null
   } catch (err) {
     if (err instanceof ApiError && err.status === 400) {
-      deleteError.value = `Kategori "${target.name}" masih dipakai oleh kelas. Hapus atau pindahkan kelasnya dulu ya.`
+      deleteError.value = `Kategori "${target.name}" masih dipakai oleh kursus. Hapus atau pindahkan kursusnya dulu ya.`
     } else {
       deleteError.value = err instanceof Error ? err.message : 'Terjadi kesalahan.'
     }
@@ -97,7 +97,7 @@ async function confirmDelete() {
   <div class="flex flex-col gap-6">
     <div class="flex flex-col gap-1">
       <h1 class="text-2xl font-bold text-heading">Kategori</h1>
-      <p class="text-sm text-text-soft">Kelola kategori kelas di platform DevAcademy</p>
+      <p class="text-sm text-text-soft">Kelola kategori kursus di platform DevAcademy</p>
     </div>
 
     <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
@@ -108,7 +108,7 @@ async function confirmDelete() {
           </span>
           <div>
             <h2 class="font-semibold text-heading">Tambah Kategori</h2>
-            <p class="text-sm text-text-soft">Buat kategori baru untuk mengelompokkan kelas</p>
+            <p class="text-sm text-text-soft">Buat kategori baru untuk mengelompokkan kursus</p>
           </div>
         </div>
 

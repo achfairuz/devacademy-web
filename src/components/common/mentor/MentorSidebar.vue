@@ -30,7 +30,7 @@ const router = useRouter()
 
 const navItems: NavItem[] = [
   { label: 'Dashboard', to: '/mentor/dashboard', icon: LayoutDashboard },
-  { label: 'Kelas', to: '/mentor/courses', icon: BookOpen },
+  { label: 'Kursus', to: '/mentor/courses', icon: BookOpen },
   { label: 'Kategori', to: '/mentor/categories', icon: Layers },
   { label: 'Jadwal Mengajar', to: '/mentor/schedule', icon: CalendarDays },
   { label: 'Siswa', to: '/mentor/students', icon: Users },

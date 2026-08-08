@@ -74,7 +74,7 @@ watch([selectedCategory, selectedLevel, searchQuery], () => {
   <div class="flex flex-col gap-6">
     <div class="flex flex-col gap-1">
       <h1 class="text-2xl font-bold text-heading">Courses</h1>
-      <p class="text-sm text-text-soft">Jelajahi dan pilih kelas yang sesuai minat Anda</p>
+      <p class="text-sm text-text-soft">Jelajahi dan pilih kursus yang sesuai minat Anda</p>
     </div>
 
     <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
