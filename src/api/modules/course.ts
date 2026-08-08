@@ -30,7 +30,48 @@ function toCourse(raw: Course): Course {
   return { ...raw, status: raw.status ?? 'draft', sections }
 }
 
+interface RawCourse {
+  ID: string
+  MentorID: string
+  CategoryID: string
+  LevelID: string
+  Title: string
+  Slug: string
+  Description: string
+  Thumbnail: string
+  Price: number
+  Duration: number
+  Status: string
+  Category?: { ID: string; Name: string; Slug: string; Icon?: string } | null
+  Level?: { ID: string; Name: string; Slug: string } | null
+}
+
+function toListCourse(raw: RawCourse): Course {
+  const level =
+    raw.Level?.Slug === 'intermediate' || raw.Level?.Slug === 'advanced'
+      ? raw.Level.Slug
+      : 'beginner'
+  return {
+    id: raw.ID,
+    slug: raw.Slug,
+    title: raw.Title,
+    description: raw.Description,
+    category_id: raw.CategoryID,
+    thumbnail: raw.Thumbnail || undefined,
+    price: raw.Price,
+    level,
+    duration: raw.Duration,
+    status: raw.Status === 'published' ? 'published' : 'draft',
+    sections: [],
+  }
+}
+
 export const courseApi = {
+  async list(): Promise<Course[]> {
+    const response = await request<ApiResponse<RawCourse[]>>(endpoints.courses.list)
+    return (response.data ?? []).map(toListCourse)
+  },
+
   async create(payload: CoursePayload): Promise<Course> {
     const response = await request<ApiResponse<Course>>(endpoints.courses.list, {
       method: 'POST',
@@ -60,6 +101,13 @@ export const courseApi = {
     await request<ApiResponse<null>>(endpoints.courses.status(slug), {
       method: 'PATCH',
       body: { status: 'published' },
+    })
+  },
+
+  async updateStatus(slug: string, status: 'draft' | 'published'): Promise<void> {
+    await request<ApiResponse<null>>(endpoints.courses.status(slug), {
+      method: 'PATCH',
+      body: { status },
     })
   },
 

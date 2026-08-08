@@ -1,6 +1,7 @@
 import axios, { type AxiosRequestConfig } from 'axios'
 
 import type { ApiErrorPayload } from '@/models/api'
+import { authService } from '@/services/authService'
 
 export class ApiError extends Error {
   readonly status: number
@@ -30,6 +31,14 @@ const client = axios.create({
     Accept: 'application/json',
     'Content-Type': 'application/json',
   },
+})
+
+client.interceptors.request.use((config) => {
+  const token = authService.token
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
+  return config
 })
 
 export async function request<T>(path: string, options: ApiClientOptions = {}): Promise<T> {

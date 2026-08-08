@@ -12,20 +12,25 @@ import {
   Users,
 } from '@lucide/vue'
 import { RouterLink } from 'vue-router'
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
+import { courseApi } from '@/api/modules/course'
+import { getCategories } from '@/api/modules/category'
 import BaseCard from '@/components/base/BaseCard.vue'
 import BaseConfirmModal from '@/components/base/BaseConfirmModal.vue'
 import BaseToast from '@/components/base/BaseToast.vue'
 import BaseToggle from '@/components/base/BaseToggle.vue'
+import { courseDraftService } from '@/services/courseDraftService'
+import { formatRupiah } from '@/utils/formatters'
 
 type CourseStatus = 'published' | 'draft'
 
 interface MentorCourse {
   id: string
+  slug: string
   title: string
   category: string
-  level: 'Pemula' | 'Menengah' | 'Mahir'
+  level: string
   students: number
   rating: number
   status: CourseStatus
@@ -33,52 +38,52 @@ interface MentorCourse {
   color: string
 }
 
-const courses = ref<MentorCourse[]>([
-  {
-    id: 'js-fundamental',
-    title: 'Fundamental JavaScript',
-    category: 'Programming',
-    level: 'Pemula',
-    students: 48,
-    rating: 4.9,
-    status: 'published',
-    price: 'Rp 199.000',
-    color: 'bg-primary-500',
-  },
-  {
-    id: 'ui-ux-dasar',
-    title: 'UI/UX Design Dasar',
-    category: 'Design',
-    level: 'Menengah',
-    students: 35,
-    rating: 4.8,
-    status: 'published',
-    price: 'Rp 249.000',
-    color: 'bg-secondary-500',
-  },
-  {
-    id: 'database-sql',
-    title: 'Database & SQL',
-    category: 'Data',
-    level: 'Pemula',
-    students: 21,
-    rating: 5.0,
-    status: 'draft',
-    price: 'Rp 179.000',
-    color: 'bg-emerald-500',
-  },
-  {
-    id: 'react-modern',
-    title: 'React JS Modern',
-    category: 'Programming',
-    level: 'Mahir',
-    students: 0,
-    rating: 0,
-    status: 'draft',
-    price: 'Rp 299.000',
-    color: 'bg-blue-500',
-  },
-])
+const LEVEL_LABELS: Record<string, string> = {
+  beginner: 'Pemula',
+  intermediate: 'Menengah',
+  advanced: 'Mahir',
+}
+
+const COURSE_COLORS = [
+  'bg-primary-500',
+  'bg-secondary-500',
+  'bg-emerald-500',
+  'bg-blue-500',
+  'bg-amber-500',
+  'bg-purple-500',
+] as const
+
+const DEFAULT_COLOR = 'bg-primary-500'
+
+const courses = ref<MentorCourse[]>([])
+const loading = ref(true)
+const loadError = ref<string | null>(null)
+
+onMounted(async () => {
+  loading.value = true
+  loadError.value = null
+  try {
+    const [data, categories] = await Promise.all([courseApi.list(), getCategories()])
+    const categoryNames = new Map(categories.map((category) => [category.id, category.name]))
+    courses.value = data.map((course, index) => ({
+      id: course.id ?? '',
+      slug: course.slug ?? course.id ?? '',
+      title: course.title,
+      category: course.category_id ? (categoryNames.get(course.category_id) ?? '—') : '—',
+      level: LEVEL_LABELS[course.level] ?? course.level,
+      students: 0,
+      rating: 0,
+      status: course.status,
+      price: formatRupiah(course.price),
+      color: COURSE_COLORS[index % COURSE_COLORS.length] ?? DEFAULT_COLOR,
+    }))
+  } catch (error) {
+    console.error('[mentor-courses] Gagal memuat kursus.', error)
+    loadError.value = 'Gagal memuat daftar kursus.'
+  } finally {
+    loading.value = false
+  }
+})
 
 const searchQuery = ref('')
 const statusFilter = ref<'all' | CourseStatus>('all')
@@ -111,13 +116,21 @@ const statusTabs = [
   { label: 'Draft', value: 'draft' },
 ] as const
 
-function toggleStatus(id: string) {
+async function toggleStatus(id: string) {
   const course = courses.value.find((item) => item.id === id)
   if (!course) return
-  course.status = course.status === 'published' ? 'draft' : 'published'
+  const next: CourseStatus = course.status === 'published' ? 'draft' : 'published'
+  try {
+    await courseApi.updateStatus(course.slug, next)
+    course.status = next
+  } catch (error) {
+    console.error('[mentor-courses] Gagal mengubah status.', error)
+    showToast('Gagal mengubah status kursus.', 'error')
+  }
 }
 
 const toDelete = ref<MentorCourse | null>(null)
+const deleting = ref(false)
 const toast = ref<{ message: string; type?: 'success' | 'error' | 'info' } | null>(null)
 
 const deleteCourseDescription = computed(() =>
@@ -134,12 +147,26 @@ function requestDelete(course: MentorCourse) {
   toDelete.value = course
 }
 
-function confirmDelete() {
+async function confirmDelete() {
   if (!toDelete.value) return
   const target = toDelete.value
-  courses.value = courses.value.filter((course) => course.id !== target.id)
-  showToast(`Kursus "${target.title}" berhasil dihapus.`)
-  toDelete.value = null
+  deleting.value = true
+  const isBackendCourse =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(target.id)
+  try {
+    if (isBackendCourse) {
+      await courseApi.remove(target.id)
+    }
+    courses.value = courses.value.filter((course) => course.id !== target.id)
+    courseDraftService.remove(target.id)
+    showToast(`Kursus "${target.title}" berhasil dihapus.`)
+  } catch (error) {
+    console.error('[mentor-courses] Gagal menghapus kursus.', error)
+    showToast(`Gagal menghapus kursus "${target.title}".`, 'error')
+  } finally {
+    deleting.value = false
+    toDelete.value = null
+  }
 }
 </script>
 
@@ -315,8 +342,17 @@ function confirmDelete() {
 
       <div v-if="filteredCourses.length === 0" class="flex flex-col items-center gap-2 py-16 text-center">
         <CircleAlert :size="36" class="text-text-soft" />
-        <p class="font-semibold text-heading">Kursus tidak ditemukan</p>
-        <p class="text-sm text-text-soft">Coba ubah kata kunci atau filter yang dipilih.</p>
+        <template v-if="loading">
+          <p class="font-semibold text-heading">Memuat kursus...</p>
+        </template>
+        <template v-else-if="loadError">
+          <p class="font-semibold text-heading">Kursus tidak ditemukan</p>
+          <p class="text-sm text-text-soft">{{ loadError }}</p>
+        </template>
+        <template v-else>
+          <p class="font-semibold text-heading">Kursus tidak ditemukan</p>
+          <p class="text-sm text-text-soft">Coba ubah kata kunci atau filter yang dipilih.</p>
+        </template>
       </div>
     </BaseCard>
 
@@ -327,6 +363,7 @@ function confirmDelete() {
       confirm-text="Ya, Hapus Kursus"
       cancel-text="Batal"
       variant="danger"
+      :loading="deleting"
       @update:model-value="(value) => { if (!value) toDelete = null }"
       @confirm="confirmDelete"
     />
