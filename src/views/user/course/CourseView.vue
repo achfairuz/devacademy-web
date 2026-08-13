@@ -18,14 +18,19 @@ import { computed, ref, watch } from 'vue'
 
 import BaseCard from '@/components/base/BaseCard.vue'
 import { courses } from './courseData'
+import { useLevel } from '@/hooks/useLevel'
 
 const categories = ['Semua', 'Programming', 'Design', 'Data', 'Business'] as const
-const levels = ['Semua', 'Pemula', 'Menengah', 'Mahir'] as const
+const { error, levels, loading, reload } = useLevel()
 
 const PAGE_SIZE = 12
 
 const selectedCategory = ref<(typeof categories)[number]>('Semua')
-const selectedLevel = ref<(typeof levels)[number]>('Semua')
+const selectedLevel = ref<string>('Semua')
+const levelOptions = computed(() => [
+  { slug: 'all', name: 'Semua' },
+  ...levels.value.map((level) => ({ slug: level.slug, name: level.name })),
+])
 const searchQuery = ref('')
 const currentPage = ref(1)
 
@@ -115,18 +120,18 @@ watch([selectedCategory, selectedLevel, searchQuery], () => {
       <div class="flex flex-wrap items-center gap-2">
         <GraduationCap :size="15" class="text-text-soft" />
         <button
-          v-for="level in levels"
-          :key="level"
+          v-for="level in levelOptions"
+          :key="level.slug"
           type="button"
           class="rounded-md border px-3 py-1.5 text-sm font-medium transition-colors"
           :class="
-            selectedLevel === level
+            selectedLevel === level.name
               ? 'border-primary bg-primary-50 text-primary'
               : 'border-border text-text-soft hover:border-primary/40 hover:text-primary'
           "
-          @click="selectedLevel = level"
+          @click="selectedLevel = level.name"
         >
-          {{ level }}
+          {{ level.name }}
         </button>
       </div>
     </div>

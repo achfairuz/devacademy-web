@@ -16,6 +16,7 @@ export function useLevel() {
     error.value = null
     try {
       levels.value = await levelApi.getLevels()
+      console.log('[levels] Berhasil memuat level.', levels.value)
     } catch (err) {
       console.error('[levels] Gagal memuat level.', err)
       error.value = 'Gagal memuat level.'
