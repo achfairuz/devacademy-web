@@ -5,6 +5,7 @@ import type {
   Assignment,
   AssignmentPayload,
   Course,
+  CourseDetail,
   CoursePayload,
   LessonPayload,
   Lesson,
@@ -68,6 +69,16 @@ export const courseApi = {
   async get(id: string): Promise<Course> {
     const response = await request<ApiResponse<RawCourse>>(endpoints.courses.detail(id))
     return toCourse(response.data)
+  },
+
+  async getDetail(id: string): Promise<CourseDetail> {
+    const response = await request<ApiResponse<CourseDetail>>(endpoints.courses.detail(id))
+    return response.data
+  },
+
+  async getDetailBySlug(slug: string): Promise<CourseDetail> {
+    const response = await request<ApiResponse<CourseDetail>>(endpoints.courses.detailsBySlug(slug))
+    return response.data
   },
 
   async update(id: string, payload: CoursePayload): Promise<Course> {

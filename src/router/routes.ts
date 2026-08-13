@@ -153,6 +153,11 @@ export const routes: RouteRecordRaw[] = [
         component: () => import('@/views/mentor/course/CreateCourseView.vue'),
       },
       {
+        path: 'courses/:id',
+        name: 'mentor-course-detail',
+        component: () => import('@/views/mentor/course/MentorCourseDetailView.vue'),
+      },
+      {
         path: 'courses/:id/edit',
         name: 'mentor-course-edit',
         component: () => import('@/views/mentor/course/EditCourseView.vue'),

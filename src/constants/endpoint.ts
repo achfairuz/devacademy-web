@@ -12,8 +12,10 @@ export const endpoints = {
     list: '/courses',
     detail: (id: string) => `/courses/${id}`,
     status: (slug: string) => `/courses/slug/${slug}/status`,
+    detailsBySlug: (slug: string) => `/courses/slug/${slug}/detail`,
     sections: (courseId: string) => `/courses/${courseId}/sections`,
-    sectionDetail: (courseId: string, sectionId: string) => `/courses/${courseId}/sections/${sectionId}`,
+    sectionDetail: (courseId: string, sectionId: string) =>
+      `/courses/${courseId}/sections/${sectionId}`,
     lessons: (courseId: string, sectionId: string) =>
       `/courses/${courseId}/sections/${sectionId}/lessons`,
     lessonDetail: (courseId: string, sectionId: string, lessonId: string) =>
@@ -28,7 +30,12 @@ export const endpoints = {
       `/courses/${courseId}/sections/${sectionId}/lessons/${lessonId}/quizzes/${quizId}`,
     lessonAssignment: (courseId: string, sectionId: string, lessonId: string) =>
       `/courses/${courseId}/sections/${sectionId}/lessons/${lessonId}/assignments`,
-    assignmentDetail: (courseId: string, sectionId: string, lessonId: string, assignmentId: string) =>
+    assignmentDetail: (
+      courseId: string,
+      sectionId: string,
+      lessonId: string,
+      assignmentId: string,
+    ) =>
       `/courses/${courseId}/sections/${sectionId}/lessons/${lessonId}/assignments/${assignmentId}`,
   },
 } as const

@@ -157,6 +157,96 @@ export interface CourseChecklistItem {
   message?: string
 }
 
+export interface CourseMentor {
+  id: string
+  full_name: string
+  username: string
+  email: string
+  avatar: string
+  role: string
+}
+
+export interface CourseCategoryRef {
+  id: string
+  name: string
+  slug: string
+  icon?: string
+}
+
+export interface CourseLevelRef {
+  id: string
+  name: string
+  slug: string
+}
+
+export interface CourseQuizOption {
+  id: string
+  option_text: string
+}
+
+export interface CourseQuizQuestion {
+  id: string
+  question: string
+  question_type: QuestionType
+  options: CourseQuizOption[]
+}
+
+export interface CourseQuiz {
+  id: string
+  title: string
+  passing_score: number
+  questions: CourseQuizQuestion[]
+}
+
+export interface CourseAssignment {
+  id: string
+  title: string
+  description: string
+  due_date: string
+}
+
+export interface CourseLesson {
+  id: string
+  section_id: string
+  title: string
+  description: string
+  video_url?: string
+  duration: number
+  order_number: number
+  is_preview: boolean
+  files: LessonFile[]
+  quiz: CourseQuiz | null
+  assignment: CourseAssignment | null
+}
+
+export interface CourseSection {
+  id: string
+  course_id: string
+  title: string
+  order_number: number
+  lessons: CourseLesson[]
+}
+
+export interface CourseDetail {
+  id: string
+  mentor_id: string
+  category_id: string
+  level_id: string
+  title: string
+  slug: string
+  description: string
+  thumbnail: string
+  price: number
+  duration: number
+  status: CourseStatus
+  created_at: string
+  updated_at: string
+  mentor: CourseMentor
+  category: CourseCategoryRef
+  level: CourseLevelRef
+  sections: CourseSection[]
+}
+
 export function createEmptyCourse(): Course {
   return {
     title: '',
