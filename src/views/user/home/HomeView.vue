@@ -21,10 +21,10 @@ import type { Component } from 'vue'
 
 import BaseButton from '@/components/base/BaseButton.vue'
 import BaseCard from '@/components/base/BaseCard.vue'
-import { useAuthController } from '@/controllers/authController'
+import { useAuth } from '@/hooks/useAuth'
 import { formatInitials } from '@/utils/formatters'
 
-const { user } = useAuthController()
+const { user } = useAuth()
 const router = useRouter()
 
 const stats: { label: string; value: string; icon: Component; accent: string }[] = [

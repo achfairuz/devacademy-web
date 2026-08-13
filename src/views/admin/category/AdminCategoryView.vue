@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Check, Layers, LoaderCircle, Plus, Tag, Trash2 } from '@lucide/vue'
-import { computed, onMounted, ref } from 'vue'
+import { computed, ref } from 'vue'
 
 import { ApiError } from '@/api/http'
 import BaseButton from '@/components/base/BaseButton.vue'
@@ -9,13 +9,12 @@ import BaseConfirmModal from '@/components/base/BaseConfirmModal.vue'
 import BaseInput from '@/components/base/BaseInput.vue'
 import BaseToast from '@/components/base/BaseToast.vue'
 import IconPicker from '@/components/common/mentor/IconPicker.vue'
-import { useCategoryController } from '@/controllers/categoryController'
+import { useCategories } from '@/hooks/useCategories'
 import type { Category } from '@/models/category'
 import { formatDate } from '@/utils/formatters'
 import { resolveCategoryIcon } from '@/utils/icon'
 
-const { categories, loading, loadCategories, addCategory, removeCategory } =
-  useCategoryController()
+const { categories, loading, addCategory, removeCategory } = useCategories()
 
 const name = ref('')
 const icon = ref('')
@@ -28,8 +27,6 @@ const deleting = ref(false)
 const deleteError = ref<string | null>(null)
 
 const toast = ref<{ message: string; type?: 'success' | 'error' | 'info' } | null>(null)
-
-onMounted(loadCategories)
 
 const remaining = computed(() => name.value.trim().length)
 

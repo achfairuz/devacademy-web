@@ -145,5 +145,5 @@ Payload assignment: `{ title, description, due_date }`.
 
 ## 6. Catatan Integrasi (gap)
 
-- `courseApi.list()` memakai respons berbentuk `RawCourse` (ID/kebab) → di-map; sedangkan `getDetail()` memakai respons snake_case. Jika backend menyatukan format, `toCourse` perlu disesuaikan.
+- Backend (Go) mengembalikan kebab-case/PascalCase (`ID`, `MentorID`, `Sections`, …). Bentuk mentahnya didefinisikan sebagai kontrak API (DTO) di `src/api/contracts/course.ts` (`RawCourse`, `RawCourseDetail`, `RawMentor`, `RawSection`, `RawLesson`, `RawQuiz`, dsb.) dan di-map di `src/api/modules/course.ts` (`toCourse`, `toCourseDetail`, `toCourseQuiz`, `toLessonFile`) ke model domain snake_case di `src/models/course.ts`.
 - Delete section/lesson/quiz/assignment serta upload file **belum dipanggil** dari UI (lihat `course-feature-audit.md`).

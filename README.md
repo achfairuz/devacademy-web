@@ -22,14 +22,15 @@ Frontend web untuk **DevAcademy** — dibangun dengan Vue 3, Vite, Pinia, Vue Ro
 src/
 ├── api/               # HTTP client & request per modul
 │   ├── http.ts
-│   └── modules/
+│   ├── contracts/     # DTO respons API mentah (Raw*)
+│   ├── mappers/       # Konversi kontrak → model domain (toX)
+│   └── modules/       # auth.ts, category.ts, course.ts, levels.ts
 ├── assets/
 │   └── main.css       # Tailwind CSS + tema (color tokens)
 ├── components/
 │   ├── base/          # Komponen generik/atomik (BaseButton, dll.)
 │   └── common/        # Komponen lintas halaman (AppHeader, dll.)
-├── controllers/       # Koordinasi store + routing (useAuthController)
-├── hooks/             # Composables reusable
+├── hooks/             # Composables reusable (state + API + navigasi)
 │   ├── useAuth.ts
 │   ├── useAsync.ts    # State loading/error untuk aksi async
 │   └── useForm.ts     # State form + reset

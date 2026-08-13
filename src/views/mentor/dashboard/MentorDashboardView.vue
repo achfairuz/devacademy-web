@@ -18,10 +18,10 @@ import type { Component } from 'vue'
 
 import BaseButton from '@/components/base/BaseButton.vue'
 import BaseCard from '@/components/base/BaseCard.vue'
-import { useAuthController } from '@/controllers/authController'
+import { useAuth } from '@/hooks/useAuth'
 import { formatInitials } from '@/utils/formatters'
 
-const { user } = useAuthController()
+const { user } = useAuth()
 
 const stats: { label: string; value: string; icon: Component; accent: string }[] = [
   { label: 'Total Siswa', value: '128', icon: Users, accent: 'bg-blue-50 text-blue-600' },

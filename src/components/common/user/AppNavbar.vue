@@ -14,7 +14,6 @@ import {
 import { RouterLink } from 'vue-router'
 import { computed, onBeforeUnmount, onMounted, ref, type Component } from 'vue'
 
-import { useAuthController } from '@/controllers/authController'
 import { useAuth } from '@/hooks/useAuth'
 import type { UserRole } from '@/models/auth'
 import { formatInitials } from '@/utils/formatters'
@@ -28,8 +27,7 @@ interface NavItem {
   requiresAuth?: boolean
 }
 
-const { user, isAuthenticated } = useAuth()
-const { logout } = useAuthController()
+const { user, isAuthenticated, logout } = useAuth()
 
 const isDropdownOpen = ref(false)
 const dropdownRef = ref<HTMLElement | null>(null)

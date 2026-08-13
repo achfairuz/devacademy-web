@@ -7,18 +7,22 @@ export function formatInitials(name?: string | null): string {
     .join('')
 }
 
-export function formatDate(date: Date | string, locale = 'id-ID'): string {
-  return new Intl.DateTimeFormat(locale, { dateStyle: 'medium' }).format(new Date(date))
+export function formatDate(date?: Date | string | null, locale = 'id-ID'): string {
+  if (!date) return ''
+  const value = new Date(date)
+  if (Number.isNaN(value.getTime())) return ''
+  return new Intl.DateTimeFormat(locale, { dateStyle: 'medium' }).format(value)
 }
 
-export function formatRupiah(value: number): string {
+export function formatRupiah(value?: number | null): string {
+  if (value == null || Number.isNaN(value)) return ''
   return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(
     value,
   )
 }
 
-export function formatMinutes(totalMinutes: number): string {
-  const minutes = Math.max(0, Math.round(totalMinutes))
+export function formatMinutes(totalMinutes?: number | null): string {
+  const minutes = Math.max(0, Math.round(totalMinutes ?? 0))
   const hours = Math.floor(minutes / 60)
   const rest = minutes % 60
   if (hours > 0 && rest > 0) return `${hours} jam ${rest} menit`

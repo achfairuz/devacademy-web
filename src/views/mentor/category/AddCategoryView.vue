@@ -1,16 +1,14 @@
 <script setup lang="ts">
 import { ArrowLeft, Layers, LoaderCircle, ShieldCheck } from '@lucide/vue'
 import { RouterLink } from 'vue-router'
-import { computed, onMounted } from 'vue'
+import { computed } from 'vue'
 
 import BaseCard from '@/components/base/BaseCard.vue'
-import { useCategoryController } from '@/controllers/categoryController'
+import { useCategories } from '@/hooks/useCategories'
 import { formatDate } from '@/utils/formatters'
 import { resolveCategoryIcon } from '@/utils/icon'
 
-const { categories, loading, loadCategories } = useCategoryController()
-
-onMounted(loadCategories)
+const { categories, loading } = useCategories()
 
 const sortedCategories = computed(() =>
   [...categories.value].sort((a, b) => a.name.localeCompare(b.name)),

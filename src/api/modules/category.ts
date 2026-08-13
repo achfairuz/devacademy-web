@@ -4,20 +4,26 @@ import type { ApiResponse } from '@/models/api'
 import type { Category } from '@/models/category'
 
 interface RawCategory {
-  ID: string
-  Name: string
-  Slug: string
+  id?: string
+  ID?: string
+  name?: string
+  Name?: string
+  slug?: string
+  Slug?: string
+  icon?: string
   Icon?: string
-  CreatedAt: string
+  created_at?: string
+  createdAt?: string
+  CreatedAt?: string
 }
 
 function toCategory(raw: RawCategory): Category {
   return {
-    id: raw.ID,
-    name: raw.Name,
-    slug: raw.Slug,
-    icon: raw.Icon,
-    createdAt: raw.CreatedAt,
+    id: raw.id ?? raw.ID ?? '',
+    name: raw.name ?? raw.Name ?? '',
+    slug: raw.slug ?? raw.Slug ?? '',
+    icon: raw.icon ?? raw.Icon,
+    createdAt: raw.created_at ?? raw.createdAt ?? raw.CreatedAt ?? '',
   }
 }
 

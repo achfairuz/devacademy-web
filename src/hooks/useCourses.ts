@@ -24,7 +24,13 @@ export function useCourses() {
     }
   }
 
+  async function removeCourse(id: string, slug: string) {
+    await courseApi.remove(id)
+    courses.value = courses.value.filter((item) => item.id !== id)
+    return slug
+  }
+
   onMounted(load)
 
-  return { courses, loading, error, reload: load }
+  return { courses, loading, error, reload: load, removeCourse }
 }

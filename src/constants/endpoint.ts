@@ -8,6 +8,10 @@ export const endpoints = {
     list: '/categories',
     detail: (id: string) => `/categories/${id}`,
   },
+  levels: {
+    list: '/levels',
+    detail: (id: string) => `/levels/${id}`,
+  },
   courses: {
     list: '/courses',
     detail: (id: string) => `/courses/${id}`,

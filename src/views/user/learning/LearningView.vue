@@ -15,10 +15,10 @@ import { RouterLink } from 'vue-router'
 import { computed } from 'vue'
 
 import BaseCard from '@/components/base/BaseCard.vue'
-import { useAuthController } from '@/controllers/authController'
+import { useAuth } from '@/hooks/useAuth'
 import { courses } from '../course/courseData'
 
-const { user } = useAuthController()
+const { user } = useAuth()
 
 const enrolledCourses = computed(() => courses.filter((course) => course.isEnrolled))
 

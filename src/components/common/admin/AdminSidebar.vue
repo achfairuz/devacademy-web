@@ -13,7 +13,6 @@ import {
 import { RouterLink, useRouter } from 'vue-router'
 import { computed, type Component } from 'vue'
 
-import { useAuthController } from '@/controllers/authController'
 import { useAuth } from '@/hooks/useAuth'
 import { formatInitials } from '@/utils/formatters'
 
@@ -23,8 +22,7 @@ interface NavItem {
   icon: Component
 }
 
-const { user } = useAuth()
-const { logout } = useAuthController()
+const { user, logout } = useAuth()
 const router = useRouter()
 
 const navItems: NavItem[] = [

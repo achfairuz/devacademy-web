@@ -1,5 +1,7 @@
 import { request } from '@/api/http'
 import { endpoints } from '@/constants/endpoint'
+import { toCourse, toCourseDetail } from '@/api/mappers/course'
+import type { RawCourse, RawCourseDetail } from '@/api/contracts/course'
 import type { ApiResponse } from '@/models/api'
 import type {
   Assignment,
@@ -10,47 +12,11 @@ import type {
   LessonPayload,
   Lesson,
   LessonFile,
-  QuizPayload,
   Quiz,
+  QuizPayload,
   SectionPayload,
   Section,
 } from '@/models/course'
-
-interface RawCourse {
-  ID: string
-  MentorID: string
-  CategoryID: string
-  LevelID: string
-  Title: string
-  Slug: string
-  Description: string
-  Thumbnail: string
-  Price: number
-  Duration: number
-  Status: string
-  Category?: { ID: string; Name: string; Slug: string; Icon?: string } | null
-  Level?: { ID: string; Name: string; Slug: string } | null
-}
-
-function toCourse(raw: RawCourse): Course {
-  const level =
-    raw.Level?.Slug === 'intermediate' || raw.Level?.Slug === 'advanced'
-      ? raw.Level.Slug
-      : 'beginner'
-  return {
-    id: raw.ID,
-    slug: raw.Slug,
-    title: raw.Title,
-    description: raw.Description,
-    category_id: raw.CategoryID,
-    thumbnail: raw.Thumbnail || undefined,
-    price: raw.Price,
-    level,
-    duration: raw.Duration,
-    status: raw.Status === 'published' ? 'published' : 'draft',
-    sections: [],
-  }
-}
 
 export const courseApi = {
   async list(): Promise<Course[]> {
@@ -72,13 +38,15 @@ export const courseApi = {
   },
 
   async getDetail(id: string): Promise<CourseDetail> {
-    const response = await request<ApiResponse<CourseDetail>>(endpoints.courses.detail(id))
-    return response.data
+    const response = await request<ApiResponse<RawCourseDetail>>(endpoints.courses.detail(id))
+    return toCourseDetail(response.data)
   },
 
   async getDetailBySlug(slug: string): Promise<CourseDetail> {
-    const response = await request<ApiResponse<CourseDetail>>(endpoints.courses.detailsBySlug(slug))
-    return response.data
+    const response = await request<ApiResponse<RawCourseDetail>>(
+      endpoints.courses.detailsBySlug(slug),
+    )
+    return toCourseDetail(response.data)
   },
 
   async update(id: string, payload: CoursePayload): Promise<Course> {
@@ -115,7 +83,11 @@ export const courseApi = {
     return { ...response.data, lessons: response.data.lessons ?? [] }
   },
 
-  async updateSection(courseId: string, sectionId: string, payload: SectionPayload): Promise<Section> {
+  async updateSection(
+    courseId: string,
+    sectionId: string,
+    payload: SectionPayload,
+  ): Promise<Section> {
     const response = await request<ApiResponse<Section>>(
       endpoints.courses.sectionDetail(courseId, sectionId),
       { method: 'PUT', body: payload },
@@ -130,10 +102,13 @@ export const courseApi = {
   },
 
   async createLesson(courseId: string, sectionId: string, payload: LessonPayload): Promise<Lesson> {
-    const response = await request<ApiResponse<Lesson>>(endpoints.courses.lessons(courseId, sectionId), {
-      method: 'POST',
-      body: payload,
-    })
+    const response = await request<ApiResponse<Lesson>>(
+      endpoints.courses.lessons(courseId, sectionId),
+      {
+        method: 'POST',
+        body: payload,
+      },
+    )
     return { ...response.data, files: response.data.files ?? [] }
   },
 
@@ -151,9 +126,12 @@ export const courseApi = {
   },
 
   async deleteLesson(courseId: string, sectionId: string, lessonId: string): Promise<void> {
-    await request<ApiResponse<null>>(endpoints.courses.lessonDetail(courseId, sectionId, lessonId), {
-      method: 'DELETE',
-    })
+    await request<ApiResponse<null>>(
+      endpoints.courses.lessonDetail(courseId, sectionId, lessonId),
+      {
+        method: 'DELETE',
+      },
+    )
   },
 
   async createLessonFile(
@@ -210,7 +188,12 @@ export const courseApi = {
     return { ...response.data, questions: response.data.questions ?? [] }
   },
 
-  async deleteQuiz(courseId: string, sectionId: string, lessonId: string, quizId: string): Promise<void> {
+  async deleteQuiz(
+    courseId: string,
+    sectionId: string,
+    lessonId: string,
+    quizId: string,
+  ): Promise<void> {
     await request<ApiResponse<null>>(
       endpoints.courses.quizDetail(courseId, sectionId, lessonId, quizId),
       { method: 'DELETE' },

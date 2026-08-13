@@ -7,12 +7,12 @@ import BaseDivider from '@/components/base/BaseDivider.vue'
 import BaseInput from '@/components/base/BaseInput.vue'
 import AuthSosmedButton from '@/components/common/AuthSosmedButton.vue'
 import AuthTabs from '@/components/common/AuthTabs.vue'
-import { useAuthController } from '@/controllers/authController'
+import { useAuth } from '@/hooks/useAuth'
 import { useAsync } from '@/hooks/useAsync'
 import { useForm } from '@/hooks/useForm'
 import { useRoute } from 'vue-router'
 
-const { login } = useAuthController()
+const { login } = useAuth()
 const route = useRoute()
 const { form } = useForm({
   email: '',

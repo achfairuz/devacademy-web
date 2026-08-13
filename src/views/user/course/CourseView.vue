@@ -21,6 +21,7 @@ import { courses } from './courseData'
 
 const categories = ['Semua', 'Programming', 'Design', 'Data', 'Business'] as const
 const levels = ['Semua', 'Pemula', 'Menengah', 'Mahir'] as const
+
 const PAGE_SIZE = 12
 
 const selectedCategory = ref<(typeof categories)[number]>('Semua')

@@ -23,6 +23,7 @@
 src/
 ├── api/               # Klien HTTP + fungsi request per modul
 │   ├── http.ts        # Axios wrapper, interceptor auth token, ApiError
+│   ├── contracts/     # DTO kontrak respons API mentah (Raw*)
 │   └── modules/       # auth.ts, category.ts, course.ts
 ├── assets/main.css    # Tema Tailwind (color tokens)
 ├── components/
@@ -37,10 +38,8 @@ src/
 │   │                  #   LessonEditorDrawer, QuizEditor, AssignmentEditor,
 │   │                  #   CourseReviewStep, DropdownMenu, drag.ts
 │   └── common/…       # AppNavbar (user), MentorSidebar, AdminSidebar
-├── controllers/       # Orchestrasi aksi + navigasi (useAuthController,
-│   │                  #   useCategoryController, useCourseController)
+├── hooks/             # Composables reusable (state + API + navigasi)
 ├── constants/         # endpoint.ts (path API), constans.ts (nav), home.ts (landing)
-├── hooks/             # Composables reusable
 ├── layouts/           # DefaultLayout, AuthLayout, UserLayout, MentorLayout, AdminLayout
 ├── models/            # Type definition (api, auth, category, course)
 ├── router/            # routes.ts, guards.ts, index.ts
@@ -53,14 +52,14 @@ src/
 ### Pola Lapisan (dependency direction)
 
 ```
-views  ──►  controllers/hooks  ──►  api/modules  ──►  api/http ──►  axios
-   │                │
-   │                └──► stores ──► services (localStorage)
+views  ──►  hooks  ──►  api/modules  ──►  api/http ──►  axios
+   │             │
+   │             └──► stores ──► services (localStorage)
    └──► models (hanya type), components (UI)
 ```
 
 - **Views** tidak memanggil API langsung kecuali melalui `api/modules` atau hooks.
-- **Controllers** mengkoordinasikan store + router (mis. login → redirect per role).
+- **Hooks** mengkoordinasikan state + store + router (mis. login → redirect per role).
 - **Hooks** memegang state reaktif yang dipakai beberapa view (mis. `useCourses` singleton).
 
 ## 3. Alur Autentikasi

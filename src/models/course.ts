@@ -241,9 +241,9 @@ export interface CourseDetail {
   status: CourseStatus
   created_at: string
   updated_at: string
-  mentor: CourseMentor
-  category: CourseCategoryRef
-  level: CourseLevelRef
+  mentor: CourseMentor | null
+  category: CourseCategoryRef | null
+  level: CourseLevelRef | null
   sections: CourseSection[]
 }
 

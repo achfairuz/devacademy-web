@@ -42,8 +42,7 @@ const totalLessons = computed(() =>
 const totalQuizzes = computed(() =>
   course.value
     ? course.value.sections.reduce(
-        (total, section) =>
-          total + section.lessons.filter((lesson) => lesson.quiz != null).length,
+        (total, section) => total + section.lessons.filter((lesson) => lesson.quiz != null).length,
         0,
       )
     : 0,
@@ -100,7 +99,9 @@ onMounted(() => {
     </div>
 
     <div v-else-if="loadError" class="flex flex-col items-center gap-3 py-20 text-center">
-      <span class="flex h-14 w-14 items-center justify-center rounded-full bg-gray-100 text-text-soft">
+      <span
+        class="flex h-14 w-14 items-center justify-center rounded-full bg-gray-100 text-text-soft"
+      >
         <CircleAlert :size="26" />
       </span>
       <p class="font-semibold text-heading">{{ loadError }}</p>
@@ -114,17 +115,21 @@ onMounted(() => {
       <section
         class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary-600 via-primary-500 to-secondary-500 p-8 text-white shadow-lg"
       >
-        <div class="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-white/10 blur-2xl" />
-        <div class="pointer-events-none absolute -bottom-20 right-24 h-40 w-40 rounded-full bg-white/10 blur-xl" />
+        <div
+          class="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-white/10 blur-2xl"
+        />
+        <div
+          class="pointer-events-none absolute -bottom-20 right-24 h-40 w-40 rounded-full bg-white/10 blur-xl"
+        />
 
         <div class="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
           <div class="flex max-w-2xl flex-col gap-3">
             <div class="flex flex-wrap items-center gap-2">
               <span class="rounded-full bg-white/20 px-3 py-1 text-xs font-semibold backdrop-blur">
-                {{ course.category.name }}
+                {{ course.category?.name ?? '—' }}
               </span>
               <span class="rounded-full bg-white/20 px-3 py-1 text-xs font-semibold backdrop-blur">
-                {{ course.level.name }}
+                {{ course.level?.name ?? '—' }}
               </span>
               <span
                 class="rounded-full px-3 py-1 text-xs font-semibold backdrop-blur"
@@ -140,7 +145,7 @@ onMounted(() => {
             <div class="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-white/90">
               <span class="inline-flex items-center gap-1.5">
                 <User :size="15" />
-                {{ course.mentor.full_name }}
+                {{ course.mentor?.full_name ?? '—' }}
               </span>
               <span class="inline-flex items-center gap-1.5">
                 <Clock :size="15" />
@@ -190,10 +195,12 @@ onMounted(() => {
                 <BookOpen :size="18" class="text-primary" />
                 <h2 class="text-lg font-semibold text-heading">Kurikulum</h2>
               </div>
-              <p class="text-sm text-text-soft">{{ course.sections.length }} section</p>
+              <p class="text-sm text-text-soft">
+                {{ course.sections?.length ?? 0 }} section
+              </p>
             </div>
 
-            <div v-if="course.sections.length > 0" class="mt-5 flex flex-col gap-4">
+            <div v-if="(course.sections?.length ?? 0) > 0" class="mt-5 flex flex-col gap-4">
               <div
                 v-for="(section, sectionIndex) in course.sections"
                 :key="section.id ?? sectionIndex"
@@ -204,12 +211,14 @@ onMounted(() => {
                   class="flex w-full items-center gap-3 bg-gray-50 px-4 py-3.5 text-left transition-colors hover:bg-gray-100"
                   @click="toggleSection(section.id ?? String(sectionIndex))"
                 >
-                  <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-primary-50 text-xs font-semibold text-primary">
+                  <span
+                    class="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-primary-50 text-xs font-semibold text-primary"
+                  >
                     {{ section.order_number }}
                   </span>
                   <span class="text-sm font-semibold text-heading">{{ section.title }}</span>
                   <span class="ml-auto text-xs text-text-soft">
-                    {{ section.lessons.length }} pelajaran
+                    {{ section.lessons?.length ?? 0 }} pelajaran
                   </span>
                 </button>
 
@@ -223,7 +232,9 @@ onMounted(() => {
                     class="flex flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center sm:gap-3"
                   >
                     <div class="flex min-w-0 flex-1 items-center gap-3">
-                      <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gray-100 text-text-soft">
+                      <span
+                        class="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gray-100 text-text-soft"
+                      >
                         <BookOpen :size="15" />
                       </span>
                       <div class="min-w-0">
@@ -286,7 +297,7 @@ onMounted(() => {
                   <Layers :size="14" />
                   Kategori
                 </dt>
-                <dd class="font-medium text-heading">{{ course.category.name }}</dd>
+                <dd class="font-medium text-heading">{{ course.category?.name ?? '—' }}</dd>
               </div>
               <div class="flex items-center justify-between py-2.5">
                 <dt class="flex items-center gap-1.5 text-text-soft">
@@ -294,7 +305,7 @@ onMounted(() => {
                   Level
                 </dt>
                 <dd class="font-medium text-heading">
-                  {{ LEVEL_LABELS[course.level.slug] ?? course.level.name }}
+                  {{ LEVEL_LABELS[course.level?.slug ?? ''] ?? course.level?.name ?? '—' }}
                 </dd>
               </div>
               <div class="flex items-center justify-between py-2.5">
@@ -343,13 +354,13 @@ onMounted(() => {
               <span
                 class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary-50 font-semibold text-primary"
               >
-                {{ course.mentor.full_name.charAt(0).toUpperCase() }}
+                {{ course.mentor?.full_name?.charAt(0).toUpperCase() ?? '—' }}
               </span>
               <div class="min-w-0">
                 <p class="truncate text-sm font-semibold text-heading">
-                  {{ course.mentor.full_name }}
+                  {{ course.mentor?.full_name ?? '—' }}
                 </p>
-                <p class="truncate text-xs text-text-soft">{{ course.mentor.email }}</p>
+                <p class="truncate text-xs text-text-soft">{{ course.mentor?.email ?? '—' }}</p>
               </div>
             </div>
           </BaseCard>
