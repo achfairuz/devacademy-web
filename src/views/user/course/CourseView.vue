@@ -19,14 +19,19 @@ import { computed, ref, watch } from 'vue'
 import BaseCard from '@/components/base/BaseCard.vue'
 import { courses } from './courseData'
 import { useLevel } from '@/hooks/useLevel'
+import { useCategories } from '@/hooks/useCategories'
 
-const categories = ['Semua', 'Programming', 'Design', 'Data', 'Business'] as const
-const { error, levels, loading, reload } = useLevel()
+const { categories } = useCategories()
+const { levels } = useLevel()
 
 const PAGE_SIZE = 12
 
-const selectedCategory = ref<(typeof categories)[number]>('Semua')
-const selectedLevel = ref<string>('Semua')
+const selectedCategory = ref<string>('all')
+const selectedLevel = ref<string>('all')
+const categoryOptions = computed(() => [
+  { slug: 'all', name: 'Semua' },
+  ...categories.value.map((category) => ({ slug: category.slug, name: category.name })),
+])
 const levelOptions = computed(() => [
   { slug: 'all', name: 'Semua' },
   ...levels.value.map((level) => ({ slug: level.slug, name: level.name })),
@@ -36,10 +41,13 @@ const currentPage = ref(1)
 
 const filteredCourses = computed(() => {
   const query = searchQuery.value.trim().toLowerCase()
+  const categoryName = categoryOptions.value.find(
+    (option) => option.slug === selectedCategory.value,
+  )?.name
+  const levelName = levelOptions.value.find((option) => option.slug === selectedLevel.value)?.name
   return courses.filter((course) => {
-    const matchesCategory =
-      selectedCategory.value === 'Semua' || course.category === selectedCategory.value
-    const matchesLevel = selectedLevel.value === 'Semua' || course.level === selectedLevel.value
+    const matchesCategory = selectedCategory.value === 'all' || course.category === categoryName
+    const matchesLevel = selectedLevel.value === 'all' || course.level === levelName
     const matchesSearch = query === '' || course.title.toLowerCase().includes(query)
     return matchesCategory && matchesLevel && matchesSearch
   })
@@ -100,18 +108,18 @@ watch([selectedCategory, selectedLevel, searchQuery], () => {
       <div class="flex flex-wrap items-center gap-2">
         <SlidersHorizontal :size="15" class="text-text-soft" />
         <button
-          v-for="category in categories"
-          :key="category"
+          v-for="category in categoryOptions"
+          :key="category.slug"
           type="button"
           class="rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors"
           :class="
-            selectedCategory === category
+            selectedCategory === category.slug
               ? 'bg-primary text-white'
               : 'bg-gray-100 text-text-soft hover:bg-gray-200'
           "
-          @click="selectedCategory = category"
+          @click="selectedCategory = category.slug"
         >
-          {{ category }}
+          {{ category.name }}
         </button>
       </div>
     </div>
@@ -125,11 +133,11 @@ watch([selectedCategory, selectedLevel, searchQuery], () => {
           type="button"
           class="rounded-md border px-3 py-1.5 text-sm font-medium transition-colors"
           :class="
-            selectedLevel === level.name
+            selectedLevel === level.slug
               ? 'border-primary bg-primary-50 text-primary'
               : 'border-border text-text-soft hover:border-primary/40 hover:text-primary'
           "
-          @click="selectedLevel = level.name"
+          @click="selectedLevel = level.slug"
         >
           {{ level.name }}
         </button>

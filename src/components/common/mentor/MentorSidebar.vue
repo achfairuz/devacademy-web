@@ -98,10 +98,10 @@ async function handleLogout() {
         <span
           class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold text-white"
         >
-          {{ formatInitials(user?.name) }}
+          {{ formatInitials(user?.full_name) }}
         </span>
         <div class="min-w-0 flex-1">
-          <p class="truncate text-sm font-semibold text-heading">{{ user?.name }}</p>
+          <p class="truncate text-sm font-semibold text-heading">{{ user?.full_name }}</p>
           <p class="flex items-center gap-1 text-xs capitalize text-amber-500">
             <Star :size="12" class="fill-amber-500" />
             Mentor
@@ -110,7 +110,7 @@ async function handleLogout() {
         <button
           type="button"
           class="rounded-md p-2 text-text-soft transition-colors hover:bg-red-50 hover:text-red-600"
-          :aria-label="`Logout ${user?.name ?? ''}`"
+          :aria-label="`Logout ${user?.full_name ?? ''}`"
           @click="handleLogout"
         >
           <LogOut :size="18" />

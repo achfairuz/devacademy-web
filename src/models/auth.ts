@@ -2,10 +2,16 @@ export type UserRole = 'admin' | 'mentor' | 'student'
 
 export interface User {
   id: string
-  name: string
+  full_name: string
+  username?: string
   email: string
-  role: UserRole
+  phone?: string
   avatar?: string
+  role: UserRole
+  status?: string
+  email_verified?: boolean
+  created_at?: string
+  updated_at?: string
 }
 
 export interface AuthData {

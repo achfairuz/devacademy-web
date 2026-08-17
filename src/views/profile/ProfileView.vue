@@ -32,7 +32,7 @@ const isEditing = ref(false)
 const saved = ref(false)
 
 const form = reactive({
-  name: user.value?.name ?? '',
+  full_name: user.value?.full_name ?? '',
   email: user.value?.email ?? '',
 })
 
@@ -79,7 +79,7 @@ function toggleEdit() {
 }
 
 function saveProfile() {
-  auth.updateProfile({ name: form.name, email: form.email })
+  auth.updateProfile({ full_name: form.full_name, email: form.email })
   isEditing.value = false
   saved.value = true
   setTimeout(() => (saved.value = false), 2500)
@@ -108,19 +108,19 @@ function handleLogout() {
         <img
           v-if="user.avatar"
           :src="user.avatar"
-          :alt="user.name"
+          :alt="user.full_name"
           class="h-20 w-20 rounded-2xl object-cover shadow-lg"
         />
         <span
           v-else
           class="flex h-20 w-20 items-center justify-center rounded-2xl bg-white/20 text-2xl font-bold backdrop-blur"
         >
-          {{ formatInitials(user.name) }}
+          {{ formatInitials(user.full_name) }}
         </span>
 
         <div class="flex-1">
           <div class="flex flex-wrap items-center gap-2">
-            <h2 class="text-2xl font-bold">{{ user.name }}</h2>
+            <h2 class="text-2xl font-bold">{{ user.full_name }}</h2>
             <span
               class="inline-flex items-center gap-1 rounded-full bg-white/20 px-3 py-1 text-xs font-semibold backdrop-blur"
             >
@@ -186,7 +186,7 @@ function handleLogout() {
           @submit.prevent="saveProfile"
         >
           <BaseInput
-            v-model="form.name"
+            v-model="form.full_name"
             id="profile-name"
             label="Nama Lengkap"
             :disabled="!isEditing"

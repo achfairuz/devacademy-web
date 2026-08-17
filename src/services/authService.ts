@@ -26,7 +26,7 @@ export const authService = {
     if (!raw) return null
     try {
       const user = JSON.parse(raw) as User
-      if (!user || (!user.name && !user.id)) return null
+      if (!user || (!user.full_name && !user.id)) return null
       return user
     } catch {
       return null

@@ -96,11 +96,11 @@ const recentReviews = [
           <span
             class="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/20 text-xl font-bold backdrop-blur"
           >
-            {{ formatInitials(user.name) }}
+            {{ formatInitials(user.full_name) }}
           </span>
           <div>
             <p class="text-sm text-white/80">Halo, selamat mengajar kembali</p>
-            <h1 class="text-2xl font-bold sm:text-3xl">{{ user.name }}</h1>
+            <h1 class="text-2xl font-bold sm:text-3xl">{{ user.full_name }}</h1>
             <p class="mt-1 inline-flex items-center gap-1.5 text-sm text-white/90">
               <Sparkles :size="15" />
               Anda adalah mentor luar biasa, terus berbagi ilmu!

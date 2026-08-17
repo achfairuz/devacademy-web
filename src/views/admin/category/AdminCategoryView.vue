@@ -187,7 +187,7 @@ async function confirmDelete() {
             <div class="min-w-0 flex-1">
               <p class="truncate font-medium text-heading">{{ category.name }}</p>
               <p class="truncate text-xs text-text-soft">
-                {{ category.slug }} &middot; dibuat {{ formatDate(category.createdAt) }}
+                {{ category.slug }} &middot; dibuat {{ formatDate(category.created_at) }}
               </p>
             </div>
             <div class="flex shrink-0 items-center gap-1">

@@ -121,7 +121,7 @@ const visibleItems = computed(() =>
 
       <div v-if="isAuthenticated" class="relative flex items-center gap-3">
         <div class="hidden text-right sm:block">
-          <p class="text-sm font-medium text-heading">{{ user?.name }}</p>
+          <p class="text-sm font-medium text-heading">{{ user?.full_name }}</p>
           <p class="text-xs capitalize text-text-soft">{{ user?.role }}</p>
         </div>
 
@@ -135,14 +135,14 @@ const visibleItems = computed(() =>
           <img
             v-if="user?.avatar"
             :src="user.avatar"
-            :alt="user?.name ?? 'Avatar'"
+            :alt="user?.full_name ?? 'Avatar'"
             class="h-9 w-9 rounded-full object-cover"
           />
           <span
             v-else
             class="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-xs font-bold text-white"
           >
-            {{ formatInitials(user?.name ?? '') }}
+            {{ formatInitials(user?.full_name ?? '') }}
           </span>
           <ChevronDown :size="16" class="hidden text-text-soft sm:block" />
         </button>
@@ -162,7 +162,7 @@ const visibleItems = computed(() =>
             class="absolute right-0 top-full z-50 mt-2 w-56 origin-top-right rounded-lg border border-border bg-surface p-1 shadow-lg"
           >
             <div class="border-b border-border px-3 py-2.5">
-              <p class="truncate text-sm font-semibold text-heading">{{ user?.name }}</p>
+              <p class="truncate text-sm font-semibold text-heading">{{ user?.full_name }}</p>
               <p class="truncate text-xs text-text-soft">{{ user?.email }}</p>
             </div>
 

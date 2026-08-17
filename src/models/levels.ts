@@ -2,5 +2,5 @@ export interface Level {
   id: string
   name: string
   slug: string
-  createdAt: string
+  created_at: string
 }

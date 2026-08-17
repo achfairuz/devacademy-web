@@ -46,7 +46,7 @@ export const useAuthStore = defineStore('auth', () => {
     user.value = currentUser
   }
 
-  function updateProfile(patch: Partial<Pick<User, 'name' | 'email' | 'avatar'>>) {
+  function updateProfile(patch: Partial<Pick<User, 'full_name' | 'email' | 'avatar'>>) {
     if (user.value == null) return
     user.value = { ...user.value, ...patch }
     authService.updateSessionUser(user.value)
