@@ -19,7 +19,8 @@ import { computed } from 'vue'
 import BaseCard from '@/components/base/BaseCard.vue'
 import { useCategories } from '@/hooks/useCategories'
 import type { CourseBuilder } from '@/hooks/useCourseBuilder'
-import { COURSE_LEVELS, type Lesson } from '@/models/course'
+import { COURSE_LEVELS } from '@/models/course'
+import type { Lesson } from '@/models/lesson'
 import { formatMinutes, formatRupiah } from '@/utils/formatters'
 
 const props = defineProps<{

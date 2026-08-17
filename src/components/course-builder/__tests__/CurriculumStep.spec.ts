@@ -4,7 +4,8 @@ import { reactive } from 'vue'
 
 import CurriculumStep from '@/components/course-builder/CurriculumStep.vue'
 import type { CourseBuilder } from '@/hooks/useCourseBuilder'
-import { createEmptyLesson, createEmptyCourse } from '@/models/course'
+import { createEmptyLesson } from '@/models/lesson'
+import { createEmptyCourse } from '@/models/course'
 
 function makeBuilder(): CourseBuilder {
   const course = reactive(createEmptyCourse())

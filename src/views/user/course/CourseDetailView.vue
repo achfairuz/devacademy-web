@@ -23,7 +23,8 @@ import { getCategories } from '@/api/modules/category'
 import { ApiError } from '@/api/http'
 import BaseButton from '@/components/base/BaseButton.vue'
 import BaseCard from '@/components/base/BaseCard.vue'
-import type { Course, Lesson } from '@/models/course'
+import type { Course } from '@/models/course'
+import type { Lesson } from '@/models/lesson'
 import { formatMinutes, formatRupiah } from '@/utils/formatters'
 
 const route = useRoute()

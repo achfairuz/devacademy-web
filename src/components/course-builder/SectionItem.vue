@@ -17,7 +17,8 @@ import DropdownMenu from '@/components/course-builder/DropdownMenu.vue'
 import LessonItem from '@/components/course-builder/LessonItem.vue'
 import { dragState } from '@/components/course-builder/drag'
 import type { CourseBuilder } from '@/hooks/useCourseBuilder'
-import type { Lesson, Section } from '@/models/course'
+import type { Lesson } from '@/models/lesson'
+import type { Section } from '@/models/section'
 
 const props = defineProps<{
   builder: CourseBuilder

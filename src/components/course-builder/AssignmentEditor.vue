@@ -3,7 +3,7 @@ import { CalendarClock } from '@lucide/vue'
 
 import BaseInput from '@/components/base/BaseInput.vue'
 import RichTextEditor from '@/components/base/RichTextEditor.vue'
-import type { Assignment } from '@/models/course'
+import type { Assignment } from '@/models/assignment'
 
 defineProps<{
   assignment: Assignment

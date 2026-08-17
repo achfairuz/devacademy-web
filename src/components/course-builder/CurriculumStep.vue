@@ -6,7 +6,8 @@ import BaseConfirmModal from '@/components/base/BaseConfirmModal.vue'
 import LessonEditorDrawer from '@/components/course-builder/LessonEditorDrawer.vue'
 import SectionItem from '@/components/course-builder/SectionItem.vue'
 import type { CourseBuilder } from '@/hooks/useCourseBuilder'
-import { createEmptyLesson, type Lesson, type Section } from '@/models/course'
+import { createEmptyLesson, type Lesson } from '@/models/lesson'
+import type { Section } from '@/models/section'
 
 const props = defineProps<{
   builder: CourseBuilder

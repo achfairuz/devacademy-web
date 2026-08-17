@@ -1,19 +1,16 @@
 import { computed, onBeforeUnmount, reactive, ref, watch } from 'vue'
 import { onBeforeRouteLeave, useRouter } from 'vue-router'
 
+import { assignmentApi } from '@/api/modules/assignment'
 import { courseApi } from '@/api/modules/course'
-import {
-  COURSE_LEVELS,
-  createEmptyCourse,
-  type AssignmentPayload,
-  type Course,
-  type CourseChecklistItem,
-  type CourseLevel,
-  type CoursePayload,
-  type Lesson,
-  type QuizPayload,
-  type Section,
-} from '@/models/course'
+import { lessonApi } from '@/api/modules/lesson'
+import { quizApi } from '@/api/modules/quiz'
+import { sectionApi } from '@/api/modules/section'
+import { COURSE_LEVELS, createEmptyCourse, type Course, type CourseChecklistItem, type CourseLevel, type CoursePayload } from '@/models/course'
+import type { AssignmentPayload } from '@/models/assignment'
+import type { Lesson } from '@/models/lesson'
+import type { QuizPayload } from '@/models/quiz'
+import type { Section } from '@/models/section'
 import { courseDraftService } from '@/services/courseDraftService'
 import { cloneDeep } from '@/utils/clone'
 
@@ -336,9 +333,9 @@ export function useCourseBuilder(options: { courseId?: string } = {}) {
     const existingId = quiz.id && !quiz.id.startsWith('temp-') ? quiz.id : undefined
     try {
       if (existingId) {
-        await courseApi.updateQuiz(courseId, sectionId, lessonId, existingId, payload)
+        await quizApi.update(courseId, sectionId, lessonId, existingId, payload)
       } else {
-        const created = await courseApi.createQuiz(courseId, sectionId, lessonId, payload)
+        const created = await quizApi.create(courseId, sectionId, lessonId, payload)
         quiz.id = created.id
       }
     } catch {
@@ -358,9 +355,9 @@ export function useCourseBuilder(options: { courseId?: string } = {}) {
       assignment.id && !assignment.id.startsWith('temp-') ? assignment.id : undefined
     try {
       if (existingId) {
-        await courseApi.updateAssignment(courseId, sectionId, lessonId, existingId, payload)
+        await assignmentApi.update(courseId, sectionId, lessonId, existingId, payload)
       } else {
-        const created = await courseApi.createAssignment(courseId, sectionId, lessonId, payload)
+        const created = await assignmentApi.create(courseId, sectionId, lessonId, payload)
         assignment.id = created.id
       }
     } catch {
@@ -378,7 +375,7 @@ export function useCourseBuilder(options: { courseId?: string } = {}) {
       let sectionId = existingSectionId
       if (!sectionId) {
         try {
-          const created = await courseApi.createSection(courseId, {
+          const created = await sectionApi.create(courseId, {
             title: section.title,
             order_number: section.order_number,
           })
@@ -389,7 +386,7 @@ export function useCourseBuilder(options: { courseId?: string } = {}) {
         }
       } else {
         try {
-          await courseApi.updateSection(courseId, sectionId, {
+          await sectionApi.update(courseId, sectionId, {
             title: section.title,
             order_number: section.order_number,
           })
@@ -406,7 +403,7 @@ export function useCourseBuilder(options: { courseId?: string } = {}) {
         let lessonId = existingLessonId
         if (!lessonId) {
           try {
-            const created = await courseApi.createLesson(courseId, sectionId, {
+            const created = await lessonApi.create(courseId, sectionId, {
               title: lesson.title,
               description: lesson.description,
               video_url: lesson.video_url || undefined,
@@ -421,7 +418,7 @@ export function useCourseBuilder(options: { courseId?: string } = {}) {
           }
         } else {
           try {
-            await courseApi.updateLesson(courseId, sectionId, lessonId, {
+            await lessonApi.update(courseId, sectionId, lessonId, {
               title: lesson.title,
               description: lesson.description,
               video_url: lesson.video_url || undefined,

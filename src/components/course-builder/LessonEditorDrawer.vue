@@ -19,15 +19,9 @@ import BaseToggle from '@/components/base/BaseToggle.vue'
 import RichTextEditor from '@/components/base/RichTextEditor.vue'
 import AssignmentEditor from '@/components/course-builder/AssignmentEditor.vue'
 import QuizEditor from '@/components/course-builder/QuizEditor.vue'
-import {
-  createEmptyAssignment,
-  createEmptyQuiz,
-  LESSON_FILE_ACCEPT,
-  LESSON_FILE_TYPES,
-  resolveFileKind,
-  type Lesson,
-  type LessonFileKind,
-} from '@/models/course'
+import { createEmptyAssignment } from '@/models/assignment'
+import { LESSON_FILE_ACCEPT, LESSON_FILE_TYPES, resolveFileKind, type Lesson, type LessonFileKind } from '@/models/lesson'
+import { createEmptyQuiz } from '@/models/quiz'
 import { cloneDeep } from '@/utils/clone'
 import { formatFileSize } from '@/utils/formatters'
 

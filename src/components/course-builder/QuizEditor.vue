@@ -11,7 +11,7 @@ import {
   type QuestionType,
   type Quiz,
   type QuizQuestion,
-} from '@/models/course'
+} from '@/models/quiz'
 
 const props = defineProps<{
   quiz: Quiz
