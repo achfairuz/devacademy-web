@@ -16,7 +16,7 @@ import { ref } from 'vue'
 import DropdownMenu from '@/components/course-builder/DropdownMenu.vue'
 import LessonItem from '@/components/course-builder/LessonItem.vue'
 import { dragState } from '@/components/course-builder/drag'
-import type { CourseBuilder } from '@/hooks/useCourseBuilder'
+import type { CourseBuilder } from '@/hooks/course/useCourseBuilder'
 import type { Lesson } from '@/models/lesson'
 import type { Section } from '@/models/section'
 

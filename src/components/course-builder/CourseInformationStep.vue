@@ -6,8 +6,8 @@ import BaseCard from '@/components/base/BaseCard.vue'
 import BaseInput from '@/components/base/BaseInput.vue'
 import BaseSelect from '@/components/base/BaseSelect.vue'
 import RichTextEditor from '@/components/base/RichTextEditor.vue'
-import { useCategories } from '@/hooks/useCategories'
-import type { CourseBuilder } from '@/hooks/useCourseBuilder'
+import { useCategories } from '@/hooks/category/useCategories'
+import type { CourseBuilder } from '@/hooks/course/useCourseBuilder'
 import { COURSE_LEVELS } from '@/models/course'
 
 const props = defineProps<{

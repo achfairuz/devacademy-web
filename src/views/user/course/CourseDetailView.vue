@@ -23,17 +23,11 @@ import { getCategories } from '@/api/modules/category'
 import { ApiError } from '@/api/http'
 import BaseButton from '@/components/base/BaseButton.vue'
 import BaseCard from '@/components/base/BaseCard.vue'
-import type { Course } from '@/models/course'
-import type { Lesson } from '@/models/lesson'
+import type { Course, CourseDetail } from '@/models/course'
+import type { CourseLesson, Lesson } from '@/models/lesson'
 import { formatMinutes, formatRupiah } from '@/utils/formatters'
 
 const route = useRoute()
-
-const LEVEL_LABELS: Record<string, string> = {
-  beginner: 'Pemula',
-  intermediate: 'Menengah',
-  advanced: 'Mahir',
-}
 
 type LessonKind = 'video' | 'quiz' | 'assignment' | 'article'
 
@@ -44,14 +38,14 @@ const LESSON_ICONS = {
   article: BookOpen,
 } as const
 
-function lessonKind(lesson: Lesson): LessonKind {
+function lessonKind(lesson: Lesson | CourseLesson): LessonKind {
   if (lesson.video_url) return 'video'
   if (lesson.quiz) return 'quiz'
   if (lesson.assignment) return 'assignment'
   return 'article'
 }
 
-const course = ref<Course | null>(null)
+const course = ref<CourseDetail | null>(null)
 const categoryName = ref('')
 const relatedCourses = ref<Course[]>([])
 const loading = ref(true)
@@ -82,7 +76,7 @@ async function load() {
   try {
     const id = String(route.params.id ?? '')
     const [data, categories, allCourses] = await Promise.all([
-      courseApi.get(id),
+      courseApi.getDetail(id),
       getCategories().catch(() => []),
       courseApi.list().catch(() => []),
     ])
@@ -153,7 +147,7 @@ onMounted(load)
                 {{ categoryName || '—' }}
               </span>
               <span class="rounded-full bg-white/20 px-3 py-1 text-xs font-semibold backdrop-blur">
-                {{ LEVEL_LABELS[course.level] ?? course.level }}
+                {{ course.level?.name ?? '—' }}
               </span>
               <span
                 class="rounded-full px-3 py-1 text-xs font-semibold backdrop-blur"
@@ -169,7 +163,7 @@ onMounted(load)
             <div class="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-white/90">
               <span class="inline-flex items-center gap-1.5">
                 <GraduationCap :size="15" />
-                {{ LEVEL_LABELS[course.level] ?? course.level }}
+                {{ course.level?.name ?? '—' }}
               </span>
               <span class="inline-flex items-center gap-1.5">
                 <Clock :size="15" />
@@ -327,7 +321,7 @@ onMounted(load)
               <div class="flex items-center justify-between py-2.5">
                 <dt class="text-text-soft">Level</dt>
                 <dd class="font-medium text-heading">
-                  {{ LEVEL_LABELS[course.level] ?? course.level }}
+                  {{ course.level?.name ?? '—' }}
                 </dd>
               </div>
               <div class="flex items-center justify-between py-2.5">

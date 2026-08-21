@@ -4,7 +4,7 @@ import { RouterView } from 'vue-router'
 import AppFooter from '@/components/common/AppFooter.vue'
 import AppHeader from '@/components/common/AppHeader.vue'
 import AppNavbar from '@/components/common/user/AppNavbar.vue'
-import { useAuth } from '@/hooks/useAuth'
+import { useAuth } from '@/hooks/auth/useAuth'
 
 const { isAuthenticated } = useAuth()
 </script>

@@ -9,7 +9,7 @@ import CourseInformationStep from '@/components/course-builder/CourseInformation
 import CourseReviewStep from '@/components/course-builder/CourseReviewStep.vue'
 import CurriculumStep from '@/components/course-builder/CurriculumStep.vue'
 import StepperHeader from '@/components/course-builder/StepperHeader.vue'
-import type { CourseBuilder } from '@/hooks/useCourseBuilder'
+import type { CourseBuilder } from '@/hooks/course/useCourseBuilder'
 
 const props = defineProps<{
   builder: CourseBuilder

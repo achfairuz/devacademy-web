@@ -2,7 +2,7 @@
 import { Check, ClipboardList, Layers, Type } from '@lucide/vue'
 import type { Component } from 'vue'
 
-import { STEP_META, type StepNumber } from '@/hooks/useCourseBuilder'
+import { STEP_META, type StepNumber } from '@/hooks/course/useCourseBuilder'
 
 defineProps<{
   step: StepNumber

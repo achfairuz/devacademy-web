@@ -16,7 +16,7 @@ import type { Component } from 'vue'
 import { computed, ref } from 'vue'
 
 import { dragState } from '@/components/course-builder/drag'
-import type { CourseBuilder } from '@/hooks/useCourseBuilder'
+import type { CourseBuilder } from '@/hooks/course/useCourseBuilder'
 import type { Lesson } from '@/models/lesson'
 import { formatMinutes } from '@/utils/formatters'
 

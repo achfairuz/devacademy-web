@@ -3,7 +3,7 @@ import { LogIn, House, CircleUserRound, Menu, X } from '@lucide/vue'
 import { RouterLink, useRoute } from 'vue-router'
 import { computed, ref, watch, type Component } from 'vue'
 
-import { useAuth } from '@/hooks/useAuth'
+import { useAuth } from '@/hooks/auth/useAuth'
 import { linked } from '@/constants/constans'
 
 interface NavItem {

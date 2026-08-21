@@ -14,7 +14,7 @@ import {
 import { RouterLink } from 'vue-router'
 import { computed, onBeforeUnmount, onMounted, ref, type Component } from 'vue'
 
-import { useAuth } from '@/hooks/useAuth'
+import { useAuth } from '@/hooks/auth/useAuth'
 import type { UserRole } from '@/models/auth'
 import { formatInitials } from '@/utils/formatters'
 

@@ -7,9 +7,9 @@ import BaseDivider from '@/components/base/BaseDivider.vue'
 import BaseInput from '@/components/base/BaseInput.vue'
 import AuthSosmedButton from '@/components/common/AuthSosmedButton.vue'
 import AuthTabs from '@/components/common/AuthTabs.vue'
-import { useAuth } from '@/hooks/useAuth'
-import { useAsync } from '@/hooks/useAsync'
-import { useForm } from '@/hooks/useForm'
+import { useAuth } from '@/hooks/auth/useAuth'
+import { useAsync } from '@/hooks/common/useAsync'
+import { useForm } from '@/hooks/common/useForm'
 
 const { register } = useAuth()
 const { form } = useForm({

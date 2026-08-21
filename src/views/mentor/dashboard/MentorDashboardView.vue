@@ -18,7 +18,7 @@ import type { Component } from 'vue'
 
 import BaseButton from '@/components/base/BaseButton.vue'
 import BaseCard from '@/components/base/BaseCard.vue'
-import { useAuth } from '@/hooks/useAuth'
+import { useAuth } from '@/hooks/auth/useAuth'
 import { formatInitials } from '@/utils/formatters'
 
 const { user } = useAuth()

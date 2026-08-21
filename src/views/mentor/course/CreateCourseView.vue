@@ -2,7 +2,7 @@
 import { onMounted } from 'vue'
 
 import CourseBuilderWizard from '@/components/course-builder/CourseBuilderWizard.vue'
-import { useCourseBuilder } from '@/hooks/useCourseBuilder'
+import { useCourseBuilder } from '@/hooks/course/useCourseBuilder'
 
 const builder = useCourseBuilder()
 

@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest'
 import { reactive } from 'vue'
 
 import CurriculumStep from '@/components/course-builder/CurriculumStep.vue'
-import type { CourseBuilder } from '@/hooks/useCourseBuilder'
+import type { CourseBuilder } from '@/hooks/course/useCourseBuilder'
 import { createEmptyLesson } from '@/models/lesson'
 import { createEmptyCourse } from '@/models/course'
 

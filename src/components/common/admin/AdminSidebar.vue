@@ -13,7 +13,7 @@ import {
 import { RouterLink, useRouter } from 'vue-router'
 import { computed, type Component } from 'vue'
 
-import { useAuth } from '@/hooks/useAuth'
+import { useAuth } from '@/hooks/auth/useAuth'
 import { formatInitials } from '@/utils/formatters'
 
 interface NavItem {

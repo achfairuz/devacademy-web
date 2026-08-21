@@ -15,7 +15,7 @@ import { RouterLink } from 'vue-router'
 import { computed } from 'vue'
 
 import BaseCard from '@/components/base/BaseCard.vue'
-import { useAuth } from '@/hooks/useAuth'
+import { useAuth } from '@/hooks/auth/useAuth'
 import { courses } from '../course/courseData'
 
 const { user } = useAuth()

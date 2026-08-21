@@ -19,7 +19,7 @@ import { computed, onMounted, ref } from 'vue'
 
 import BaseButton from '@/components/base/BaseButton.vue'
 import BaseCard from '@/components/base/BaseCard.vue'
-import { useCourseDetail } from '@/hooks/useCourseDetail'
+import { useCourseDetail } from '@/hooks/course/useCourseDetail'
 import { formatDate, formatMinutes, formatRupiah } from '@/utils/formatters'
 
 const route = useRoute()

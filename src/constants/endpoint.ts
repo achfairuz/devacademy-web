@@ -14,7 +14,7 @@ export const endpoints = {
   },
   courses: {
     list: '/courses',
-    card: '/courses/card',
+    card: '/courses/cards',
     detail: (id: string) => `/courses/${id}`,
     status: (slug: string) => `/courses/slug/${slug}/status`,
     detailsBySlug: (slug: string) => `/courses/slug/${slug}/detail`,

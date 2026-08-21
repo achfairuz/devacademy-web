@@ -4,7 +4,7 @@ import { RouterLink } from 'vue-router'
 import { computed } from 'vue'
 
 import BaseCard from '@/components/base/BaseCard.vue'
-import { useCategories } from '@/hooks/useCategories'
+import { useCategories } from '@/hooks/category/useCategories'
 import { formatDate } from '@/utils/formatters'
 import { resolveCategoryIcon } from '@/utils/icon'
 
