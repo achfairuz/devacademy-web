@@ -80,6 +80,7 @@ export interface CourseDetail {
   mentor: CourseMentor | null
   category: CourseCategoryRef | null
   level: CourseLevelRef | null
+  progress?: number
   sections: CourseSection[]
 }
 

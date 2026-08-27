@@ -16,14 +16,11 @@ import {
   Users,
 } from '@lucide/vue'
 import { RouterLink, useRoute } from 'vue-router'
-import { computed, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 
-import { courseApi } from '@/api/modules/course'
-import { getCategories } from '@/api/modules/category'
-import { ApiError } from '@/api/http'
 import BaseButton from '@/components/base/BaseButton.vue'
 import BaseCard from '@/components/base/BaseCard.vue'
-import type { Course, CourseDetail } from '@/models/course'
+import { useUserCourseDetail } from '@/hooks/course/useUserCourseDetail'
 import type { CourseLesson, Lesson } from '@/models/lesson'
 import { formatMinutes, formatRupiah } from '@/utils/formatters'
 
@@ -45,23 +42,18 @@ function lessonKind(lesson: Lesson | CourseLesson): LessonKind {
   return 'article'
 }
 
-const course = ref<CourseDetail | null>(null)
-const categoryName = ref('')
-const relatedCourses = ref<Course[]>([])
-const loading = ref(true)
-const loadError = ref<string | null>(null)
+const {
+  course,
+  categoryName,
+  relatedCourses,
+  loading,
+  loadError,
+  totalLessons,
+  displayedPrice,
+  load,
+} = useUserCourseDetail()
+
 const openSections = ref<Set<string>>(new Set())
-
-const totalLessons = computed(() =>
-  course.value
-    ? course.value.sections.reduce((total, section) => total + section.lessons.length, 0)
-    : 0,
-)
-
-const displayedPrice = computed(() => {
-  const price = course.value?.price ?? 0
-  return price > 0 ? formatRupiah(price) : 'Gratis'
-})
 
 function toggleSection(sectionId: string) {
   const next = new Set(openSections.value)
@@ -70,31 +62,7 @@ function toggleSection(sectionId: string) {
   openSections.value = next
 }
 
-async function load() {
-  loading.value = true
-  loadError.value = null
-  try {
-    const id = String(route.params.id ?? '')
-    const [data, categories, allCourses] = await Promise.all([
-      courseApi.getDetail(id),
-      getCategories().catch(() => []),
-      courseApi.list().catch(() => []),
-    ])
-    course.value = data
-    categoryName.value = categories.find((category) => category.id === data.category_id)?.name ?? ''
-    relatedCourses.value = allCourses.filter((item) => item.id !== id).slice(0, 3)
-  } catch (error) {
-    console.error('[course-detail] Gagal memuat course.', error)
-    loadError.value =
-      error instanceof ApiError && error.status === 404
-        ? 'Course tidak ditemukan.'
-        : 'Gagal memuat detail course.'
-  } finally {
-    loading.value = false
-  }
-}
-
-onMounted(load)
+onMounted(() => load(String(route.params.slug ?? '')))
 </script>
 
 <template>
@@ -126,7 +94,9 @@ onMounted(load)
       </span>
       <p class="font-semibold text-heading">{{ loadError }}</p>
       <p class="text-sm text-text-soft">Course tidak dapat dimuat saat ini.</p>
-      <BaseButton variant="secondary" class="mt-2" @click="load">Coba Lagi</BaseButton>
+      <BaseButton variant="secondary" class="mt-2" @click="load(String(route.params.id ?? ''))"
+        >Coba Lagi</BaseButton
+      >
     </div>
 
     <template v-else-if="course">
@@ -265,7 +235,14 @@ onMounted(load)
                     >
                       Preview
                     </span>
-                    <span class="inline-flex shrink-0 items-center gap-1 text-xs text-text-soft">
+                    <span
+                      v-if="lesson.completed && course.progress != null"
+                      class="inline-flex shrink-0 items-center gap-1 text-xs font-medium text-emerald-600"
+                    >
+                      <CheckCircle2 :size="13" />
+                      Selesai
+                    </span>
+                    <span v-else class="inline-flex shrink-0 items-center gap-1 text-xs text-text-soft">
                       <Clock :size="13" />
                       {{ lesson.duration > 0 ? formatMinutes(lesson.duration) : '—' }}
                     </span>
@@ -347,7 +324,7 @@ onMounted(load)
               <RouterLink
                 v-for="related in relatedCourses"
                 :key="related.id"
-                :to="`/user/courses/${related.id}`"
+                :to="`/user/courses/${related.slug}`"
                 class="group flex items-center gap-3 rounded-lg border border-border p-3 no-underline transition-colors hover:border-primary/40"
               >
                 <span

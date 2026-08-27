@@ -77,7 +77,7 @@ export const routes: RouteRecordRaw[] = [
         component: () => import('@/views/user/course/CourseView.vue'),
       },
       {
-        path: 'courses/:id',
+        path: 'courses/:slug',
         name: 'course-detail',
         component: () => import('@/views/user/course/CourseDetailView.vue'),
       },
@@ -88,7 +88,7 @@ export const routes: RouteRecordRaw[] = [
       },
       {
         path: 'admin',
-        name: 'admin',
+        name: 'user-admin',
         component: () => import('@/views/error/ComingSoonView.vue'),
       },
     ],

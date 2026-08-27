@@ -60,6 +60,7 @@ export interface CourseLesson {
   duration: number
   order_number: number
   is_preview: boolean
+  completed?: boolean
   files: LessonFile[]
   quiz: CourseQuiz | null
   assignment: CourseAssignment | null

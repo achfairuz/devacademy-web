@@ -172,7 +172,7 @@ const pageItems = computed(() => buildPageItems(currentPage.value, totalPages.va
           :key="course.id"
           class="group flex flex-col gap-4 p-5 transition-all hover:border-primary/40 hover:shadow-md justify-between"
         >
-          <RouterLink :to="`/user/courses/${course.id}`" class="flex flex-col gap-4 no-underline">
+          <RouterLink :to="`/user/courses/${course.slug}`" class="flex flex-col gap-4 no-underline">
             <div class="flex items-start justify-between">
               <img
                 v-if="course.thumbnail"
@@ -243,7 +243,7 @@ const pageItems = computed(() => buildPageItems(currentPage.value, totalPages.va
           <div class="flex items-center gap-2 border-t border-border pt-4">
             <span class="text-sm font-semibold text-heading">{{ formatRupiah(course.price) }}</span>
             <RouterLink
-              :to="`/user/courses/${course.id}`"
+              :to="`/user/courses/${course.slug}`"
               class="ml-auto inline-flex items-center gap-1 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-white no-underline transition-opacity hover:opacity-90"
             >
               Detail
